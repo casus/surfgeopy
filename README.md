@@ -1,92 +1,163 @@
-# surfgeopy
+![](./images/surfgeopy_logo.png)
+`surfgeopy` is a Python package that is freely available and open-source. Its purpose is to calculate approximations of surface integrals over smooth embedded manifolds.
+
+## 🎉Table of Contents
+
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [Development team](#develpment-team)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Background
+
+`surfgeopy` rests on curved surface triangulations realised due to $k^{\text{th}}$-order interpolation of the closest point projection, extending initial linear surface approximations. It achieves this by employing a novel technique called square-squeezing, which involves transforming the interpolation tasks of triangulated manifolds to the standard hypercube using a cube-to-simplex transformation that has been recently introduced.
+To ensure the stability and accuracy of the computations, surfgeopy leverages classic Chebyshev-Lobatto grids. These grids enable the calculation of high-order interpolants for the surface geometry while avoiding Runge's phenomenon, a common issue in numerical analysis.
 
 
 
-## Getting started
+## Surface approximation using polynomial interpolation!
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Consider an element $T_{i}$ in a reference surface $S_h$. We consider the affine transformation and closest point projection:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- $\tau_i : \Delta_2 \rightarrow T_i$
+- $\pi_i : T_i \rightarrow S$
 
-## Add your files
+Setting
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- $\varphi_i : \Omega \rightarrow S, \quad \varphi_i = \pi_i \circ \tau_i\circ \sigma$
+where $\sigma$ is a mapping from the reference triangle $\Delta_2$ to the physical triangle $T_i$.
 
+Let
+
+- $q_i(\mathrm{x})= \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha}(\mathrm{x})$
+be an $n^{\text{th}}$-order polynomial (Newton) interpolation of the mapping $\varphi_i$ on $\Omega$.
+
+Then,
+
+- $T_n = {q_i,\Omega,q_i(\Omega)}_{i=1,\dots,N}$
+is an $n^{\text{th}}$ order approximation of the smooth surface $S$.
+
+
+<img src="images/approximation_frame.jpg" alt="drawing" width="4000"/>
+
+
+
+## Square-triangle transformation
+
+- Square-triangle transformations: Deformations of an equidistant grid (left picture)  under Duffy's transformation (middle picture) and square-squeezing  (right picture)
+
+<img src="images/square_equi.png" alt="drawing" width="250"/>
+<img src="images/dufyy_equi.png" alt="drawing" width="250"/>
+<img src="images/ss_equi.png" alt="drawing" width="250"/>
+
+ <h2 align="center">
+💝 Results ! 💝
+</h2>                      
+
+<img src="images/bionc_pict.png" alt="drawing" width="280"/>
+<img src="images/genus_pict.png" alt="drawing" width="280"/>
+<img src="images/torus_pict_R=0.5.png" alt="drawing" width="280"/>
+
+
+<img src="images/G_bonnet_bioconcave_linf.png" alt="drawing" width="280"/>
+<img src="images/G_bonnet_for_genus_2_linf.png" alt="drawing" width="280"/>
+<img src="images/G_bonnet_for_torus_linf2.png" alt="drawing" width="280"/>
+
+
+## Refinement  
+
+As a refinement procedure, we use the so called triangular quadrisection when the initial triangle is replaced with four triangles until a certain tol is reached. Triangular quadrisection is a linear subdivision procedure which inserts new vertices at the edge midpoints of the input mesh,  thereby producing four new faces for every face of the original mesh:
+ 
+                      x3                        x3
+                     /  \      subdivision     /  \
+                    /    \        ====>       v3__v2
+                   /      \                  / \  / \
+                 x1________x2              x1___v1___x2
+ 
+                       Original vertices : x1, x2, x3
+ 
+                       New vertices      : v1, v2, v3
+ 
+                       New faces         : [x1 v1 v3; x2 v2 v1; x3 v3 v2; v1 v2 v3] 
+                      
+
+
+
+
+
+
+## 🎉 Roadmap
+
+ We are currently working on:
+
+- Incorporating distmesh for generating mesh in python 
+- Extending HOSQ  for a wide range of non-parametrized surfaces 
+
+More Coming soon...
+
+### 🛠️ Install
+
+Since this implementation is a prototype, we currently only provide the installation by self-building from source. We recommend to using `git` to get the `surfgeopy` source:
+
+```bash
+git clone https://codebase.helmholtz.cloud/zavala68/surfgeopy.git
 ```
-cd existing_repo
-git remote add origin https://codebase.helmholtz.cloud/interpol/surfgeopy.git
-git branch -M main
-git push -uf origin main
+
+> 🚧 Switch to the `conda` or `venv` virtual environment of your choice where you would like to install the library.
+
+From within the environment, install using [pip],
+
+```bash
+pip install -e .
 ```
 
-## Integrate with your tools
+The `-e` argument specifies to install softlinks so that any changes made by the user to the source in the source folders are reflected in the install when importing modules.
 
-- [ ] [Set up project integrations](https://codebase.helmholtz.cloud/interpol/surfgeopy/-/settings/integrations)
+> You **must not** use the command `python setup.py install` to install `surfgeopy`,
+as you cannot always assume the files `setup.py` will always be present
+in the further development of `surfgeopy`.
 
-## Collaborate with your team
+## 🥳 Usage
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Documentation is a WIP. Please refer to the example Jupyter notebooks in the 👉 `examples/` directory to get started with the library.
 
-## Test and Deploy
+## 👷 Development team
 
-Use the built-in continuous integration in GitLab.
+### Main code development
+- Gentian Zavalani (HZDR/CASUS) <g.zavalani@hzdr.de>
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### Mathematical foundation
+- Gentian Zavalani (HZDR/CASUS) <g.zavalani@hzdr.de>
+- Oliver Sander (TU Dresden) <oliver.sander@tu-dresden.de>
+- Michael Hecht (HZDR/CASUS) <m.hecht@hzdr.de>
 
-***
 
-# Editing this README
+### Acknowledgement
+- Minterpy development team
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Reference
+👉 If you use `surfgeopy` in a program or publication, please
+acknowledge its authors by adding a reference to the paper
+below.
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```bibtex
+@article{...,
+  title={HIGH-ORDER-INTEGRATION FOR REGULAR EMBEDDED MANIFOLDS},
+  author={Zavalani, G., Sander, O. and Hecht, M.},
+  journal={arXiv preprint arXiv:...},
+  year={2023}
+}
+```
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+👉 [Open an issue](https://codebase.helmholtz.cloud/zavala68/surfgeopy/-/issues) or submit PRs.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+[MIT](LICENSE)
+
