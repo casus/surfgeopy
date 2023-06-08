@@ -102,7 +102,7 @@ More Coming soon...
 Since this implementation is a prototype, we currently only provide the installation by self-building from source. We recommend to using `git` to get the `surfgeopy` source:
 
 ```bash
-git clone https://codebase.helmholtz.cloud/zavala68/surfgeopy.git
+git clone https://codebase.helmholtz.cloud/interpol/surfgeopy.git
 ```
 
 > 🚧 Switch to the `conda` or `venv` virtual environment of your choice where you would like to install the library.
