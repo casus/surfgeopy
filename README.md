@@ -154,7 +154,7 @@ below.
 
 ## Contributing
 
-👉 [Open an issue](https://codebase.helmholtz.cloud/zavala68/surfgeopy/-/issues) or submit PRs.
+👉 [Open an issue](https://codebase.helmholtz.cloud/interpol/surfgeopy/-/issues) or submit PRs.
 
 
 ## License
