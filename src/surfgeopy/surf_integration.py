@@ -14,7 +14,23 @@ __all__ = ['integration', 'compute_surf_quadrature', 'quadrature_surf_tri',
 
 def integration(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement,
                 fun_handle=lambda _: 1.0, deg_integration=-1):
-    # generate quadrature points on curved triangles
+    """
+    Compute integration of a function over curved triangles.
+    
+    Args:
+        ls_function: Zero-levelset function
+        ls_grad_func: Gradient of zero-levelset function
+        vertices: Array of vertex coordinates
+        faces: Array of face connectivity
+        interp_deg: Interpolation degree
+        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
+        Refinement: Refinement level
+        fun_handle: Function to be evaluated on each quadrature point (default: lambda _: 1.0)
+        deg_integration: Degree of integration (default: -1, use default configuration)
+        
+    Returns:
+        integration value
+    """
     
     if (deg_integration > 0):
         # if the degree is set up, use the given integration and interpolation degree
@@ -38,18 +54,20 @@ def integration(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, 
 
 
 def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement, deg_integration=14):
-    """For a mixed mesh, find the cell integration of the test function f. 
-       It uses a hybrid approach that automatically uses the best setting.
-
-    Inputs
-    ----------
-    vertices:       n-by-3 array single or double, coordinates of vertices
-    faces:          m-by-3 array integer, connectivity table
-
-    Outputs
-    ----------
-    cell_int:       n-by-1 array single or double, integration on elements
-    areas:          n-by-1 array single or double, areas of elements
+    """Compute quadrature points and weights on curved triangles.
+ 
+    Args:
+        ls_function: Zero-levelset function
+        ls_grad_func: Gradient of zero-levelset function
+        vertices: Array of vertex coordinates
+        faces: Array of face connectivity
+        interp_deg: Interpolation degree
+        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
+        Refinement: Refinement level
+        deg_integration: Degree of integration (default: 14)
+        
+    Returns:
+        Quadrature points, weights, and offset array
     """
 
     # initialization
@@ -94,18 +112,20 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
                           lp_dgr, deg_integration, pnts, ws, index):
     """For a mixed mesh, find the cell integration of the test function f. 
 
-    Inputs
-    ----------
-    vertices:       n-by-3 array single or double, coordinates of vertices
-    faces:          m-by-3 array integer, connectivity table
-    deg:            integer, degree
-    pnts:           quadrature points
-    ws:             quadrature weights
+    Args:
+        ls_function: Zero-levelset function
+        ls_grad_func: Gradient of zero-levelset function
+        vertices: Array of vertex coordinates
+        faces: Array of face connectivity
+        interp_deg: Interpolation degree
+        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
+        deg_integration: Degree of integration
+        pnts: Quadrature points array
+        ws: Quadrature weights array
+        index: Current index in the arrays
 
-    Outputs
-    ----------
-    cell_int:       n-by-1 array single or double, integration on elements
-    areas:          n-by-1 array single or double, areas of elements
+    Returns:
+        Updated index value
     """
     n_faces = faces.shape[0]
     n = interp_deg
@@ -181,20 +201,23 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
 
 def quadrature_split_surf_tri(vertices, faces, ls_function, ls_grad_func, interp_deg, lp_dgr,
                                 Refinement, deg_integration, pnts, ws, index):
-    """For a mixed mesh, subdivide a mesh into smaller triangles.
-
-    Inputs
-    ----------
-    vertices:       n-by-3 array single or double, coordinates of vertices
-    faces:          m-by-3 array integer, connectivity table
-    deg:            integer, degree
-    pnts:           quadrature points
-    ws:             quadrature weights
-
-    Outputs
-    ----------
-    cell_int:       n-by-1 array single or double, integration on elements
-    areas:          n-by-1 array single or double, areas of elements
+    """ Subdivide a mesh into smaller triangles and compute quadrature points and weights.
+    
+    Args:
+        vertices: Array of vertex coordinates
+        faces: Array of face connectivity
+        ls_function: Zero-levelset function
+        ls_grad_func: Gradient of zero-levelset function
+        interp_deg: Interpolation degree
+        lp_dgr: math:`l_p`-norm, which is used to define the polynomial degree
+        Refinement: Number of mesh refinements
+        deg_integration: Degree of integration
+        pnts: Quadrature points array
+        ws: Quadrature weights array
+        index: Current index in the arrays
+        
+    Returns:
+        Updated index value
     """
     for i in range(Refinement):
         vertices, faces = subdivide(vertices, faces)
@@ -208,20 +231,16 @@ def quadrature_split_surf_tri(vertices, faces, ls_function, ls_grad_func, interp
 
 
 def SimpleImplicitSurfaceProjection(phi: callable, dphi: callable, x: np.ndarray, max_iter=10) -> np.ndarray:
-    """Closest-point projection to surface given by implicit function 
-    using a simple projection algorithm.Surface S
-    is given by zero-levelset of function F. We assume that 
-    F is differentiable in order to evaluate normals and tomdo an iterative projection.
-
-    Parameters:
-    ----------
-    phi: zero-levelset function
-    dphi: gradient of zero-levelset function
-    x: the point to be projected
-
-    Return
-    ----------
-    x: the projection point"""
+    """Closest-point projection to surface given by an implicit function using a simple projection algorithm.
+    
+    Args:
+        phi: Zero-levelset function
+        dphi: Gradient of zero-levelset function
+        x: The point to be projected
+        max_iter: Maximum number of iterations for the projection
+        
+    Returns:
+        The projection point"""
 
     tol = 10 * np.finfo(np.float64).eps
     phi_v = phi(x)
