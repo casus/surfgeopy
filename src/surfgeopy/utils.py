@@ -1,9 +1,12 @@
 #Imports
 import numpy as np
 import numba
+from numba import njit
+import scipy.io
+import os
 
 __all__ = ['compute_norm', '_cross', 'max_edge_length','decimal_to_digits',
-                           'float_to_int', 'transform', 'inv_transform']
+                           'float_to_int', 'transform', 'inv_transform','SimpleImplicitSurfaceProjection','read_mesh_data']
 
 _TYPE_MAP = [("f8", "i4"), ("f8", "i8")]
 NB_OPTS = {"nogil": True}
@@ -120,50 +123,113 @@ def float_to_int(data, digits=None, dtype=np.int32):
 
     return as_int
 
-
-def transform(unisolvent_nodes):
+def transform(unisolvent_nodes, duffy_transform=False):
     """
-    Transform Chebyshev points from [-1,1]^2 to a reference simplex.
-    Parameters
-    -------------
-      Input data
-      Chebyshev points on square
+    Transform Chebyshev points from [-1, 1]^2 to a reference simplex.
 
-    Returns
-    -------------
-    Chebyshev points on the simplex
+    Parameters:
+        unisolvent_nodes (ndarray): Chebyshev points on the square.
+        duffy_transform (bool): Whether to apply Duffy's transform.
+
+    Returns:
+        ndarray: Transformed points on the simplex.
     """
-    points_simplex = np.zeros((unisolvent_nodes.shape[0], 2))
-    points_simplex[:, 0] = 1 / 8 * \
-        ((1 + unisolvent_nodes[:, 0]) * (3 - unisolvent_nodes[:, 1]))
-    points_simplex[:, 1] = 1 / 8 * \
-        ((3 - unisolvent_nodes[:, 0]) * (unisolvent_nodes[:, 1] + 1))
+    x, y = unisolvent_nodes[:,0],unisolvent_nodes[:,1]
+    if duffy_transform:
+        points_simplex_x = (1/4) * ((1 + x) * (1 - y))
+        points_simplex_y = (1 + y) / 2
+    else:
+        points_simplex_x = (1 + x) * (3 - y) / 8
+        points_simplex_y = (3 - x) * (y + 1) / 8
+
+    return np.column_stack((points_simplex_x, points_simplex_y))
+
+
+def inv_transform(qpoint_triangle, duffy_transform=False):
+    """
+    Transform quadrature points from the reference simplex to a unit square.
+
+    Parameters:
+        qpoint_triangle (ndarray): Quadrature points on the reference simplex.
+        duffy_transform (bool): Whether to apply Duffy's transform.
+
+    Returns:
+        ndarray: Transformed points on the [-1, 1]^2.
+    """
+    x, y = qpoint_triangle[:, 0], qpoint_triangle[:, 1]
+
+    if duffy_transform:
+        qpoint_square_x = (2 * x / (1 - y)) - 1
+        qpoint_square_y = 2 * y - 1
+    else:
+        sqrt_term = np.sqrt((x - y) ** 2 + 4 * (1 - x - y))
+        qpoint_square_x = 1 + (x - y) - sqrt_term
+        qpoint_square_y = 1 - (x - y) - sqrt_term
+
+    return np.column_stack((qpoint_square_x, qpoint_square_y))
+
+ 
+# @njit(fastmath=True)
+def SimpleImplicitSurfaceProjection(phi: callable, dphi: callable, x: np.ndarray, max_iter=10) -> np.ndarray:
+    """Closest-point projection to surface given by an implicit function using a simple projection algorithm.
     
-     #duffy's transform
-#     points_simplex[:,0]=1/4*((1+unisolvent_nodes[:,0])*(1-unisolvent_nodes[:,1]))
-#     points_simplex[:,1]=((1+unisolvent_nodes[:,1]))/2
+    Args:
+        phi: Zero-levelset function
+        dphi: Gradient of zero-levelset function
+        x: The point to be projected
+        max_iter: Maximum number of iterations for the projection
+        
+    Returns:
+        The projection point"""
 
-    return points_simplex
+    tol = 10 * np.finfo(np.float64).eps
+    phi_v = phi(x)
+    for i in range(max_iter):
+        grad_phi = dphi(x)
+        grad_phi_norm = np.sum(grad_phi**2)
+        normalize = phi_v / grad_phi_norm
 
+        if np.sqrt(phi_v * normalize) < tol:
+            break
 
-def inv_transform(qpoint_triangle):
+        for j in range(len(x)):
+            x[j] -= grad_phi[j] * normalize
+
+        phi_v = phi(x)
+
+    return x
+
+def read_mesh_data(mesh_path):
     """
-    Transform quadrature points from the reference simplex to a unit square
-    Parameters
-    -------------
-      Input data
-      Quadrature points on the reference simplex
+    Read mesh data from a MAT file.
 
-    Returns
-    -------------
-    Quadrature points on the unit square
+    Args:
+        mesh_path (str): The file path to the MAT file containing mesh data.
+
+    Returns:
+        vertices (numpy.ndarray): The 'vertices' data from the MAT file.
+        faces (numpy.ndarray): The 'faces' data from the MAT file.
+
+    Raises:
+        FileNotFoundError: If the specified file does not exist.
+        Exception: If an error occurs during file reading.
     """
-    qpoint_square = np.zeros((qpoint_triangle.shape[0], 2))
-    qpoint_square[:, 0] = 1 + (qpoint_triangle[:, 0] - qpoint_triangle[:, 1]) - np.sqrt(
-        (qpoint_triangle[:, 0] - qpoint_triangle[:, 1])**2 + 4 * (1 - qpoint_triangle[:, 0] - qpoint_triangle[:, 1]))
-    qpoint_square[:, 1] = 1 - (qpoint_triangle[:, 0] - qpoint_triangle[:, 1]) - np.sqrt(
-        (qpoint_triangle[:, 0] - qpoint_triangle[:, 1])**2 + 4 * (1 - qpoint_triangle[:, 0] - qpoint_triangle[:, 1]))
-    
-#     qpoint_square[:,0]=(2*qpoint_triangle[:,0]/(1-qpoint_triangle[:,1]))-1
-#     qpoint_square[:,1]=2*qpoint_triangle[:,1]-1
-    return qpoint_square
+    try:
+        # Check if the file exists
+        if not os.path.exists(mesh_path):
+            raise FileNotFoundError(f"File not found: {mesh_path}")
+
+        # Load the MAT file
+        mesh_mat = scipy.io.loadmat(mesh_path)
+
+        # Get a list of keys in the loaded dictionary
+        key_list = list(mesh_mat.keys())
+
+        # Access the 'vertices' and 'faces' data
+        vertices = mesh_mat[key_list[-1]]
+        faces = mesh_mat[key_list[-2]] - 1  
+
+        return vertices, faces
+    except Exception as e:
+        print(f"An error occurred while reading the mesh data: {e}")
+        return None, None

@@ -1,46 +1,62 @@
 #Imports
 import numpy as np
 from minterpy import MultiIndexSet, Grid, NewtonPolynomial
+import minterpy as mp
 from minterpy.dds import dds
+from numba import njit
 
 # Local imports
-from .quadrature_points import *
-from .remesh import *
-from .utils import *
+from .quadrature_points import quadrule_on_flat,quadrule_on_simplex
+from .remesh import subdivide
+from .utils import (SimpleImplicitSurfaceProjection,compute_norm, 
+                       read_mesh_data,transform,inv_transform,_cross)
 
 __all__ = ['integration', 'compute_surf_quadrature', 'quadrature_surf_tri',
-           'SimpleImplicitSurfaceProjection']
+           'quadrature_split_surf_tri']
 
 
-def integration(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement,
+def integration(ls_function, ls_grad_func, mesh, interp_deg, lp_dgr, Refinement,
                 fun_handle=lambda _: 1.0, deg_integration=-1):
     """
-    Compute integration of a function over curved triangles.
-    
-    Args:
-        ls_function: Zero-levelset function
-        ls_grad_func: Gradient of zero-levelset function
-        vertices: Array of vertex coordinates
-        faces: Array of face connectivity
-        interp_deg: Interpolation degree
-        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
-        Refinement: Refinement level
-        fun_handle: Function to be evaluated on each quadrature point (default: lambda _: 1.0)
-        deg_integration: Degree of integration (default: -1, use default configuration)
+        Compute integration of a function over curved triangles.
         
-    Returns:
-        integration value
+        Args:
+            ls_function: callable
+                Zero-levelset function.
+            ls_grad_func: callable
+                Gradient of zero-levelset function.
+            mesh (str): 
+                 The file path to the MAT file containing mesh data.
+            vertices: ndarray
+                Array of vertex coordinates.
+            faces: ndarray
+                Array of face connectivity.
+            interp_deg: int
+                Interpolation degree.
+            lp_dgr: int
+                :math:`l_p`-norm, which is used to define the polynomial degree.
+            Refinement: int
+                Refinement level.
+            fun_handle: callable, optional
+                Function to be evaluated on each quadrature point (default: lambda _: 1.0).
+            deg_integration: int, optional
+                Degree of integration (default: -1, use default configuration).
+            
+        Returns:
+                Integration values for each curved triangle.
+
     """
     
+    vertices, faces=read_mesh_data(mesh)
     if (deg_integration > 0):
         # if the degree is set up, use the given integration and interpolation degree
         pnts, ws, offset = compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces,
-                                                     interp_deg, lp_dgr, Refinement, 100, deg_integration)
+                                                     interp_deg, lp_dgr, Refinement,fun_handle, deg_integration)
 
     else:
-        # Use the default con_facesiguration if the integration and interpolation degree is not set up
+        # Use the default configuration if the integration and interpolation degree is not set up
         pnts, ws, offset = compute_surf_quadrature(
-            ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement)
+            ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement,fun_handle)
 
     # Perform a function evaluation on each curved triangle
     n_faces = faces.shape[0]
@@ -53,21 +69,29 @@ def integration(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, 
     return fs
 
 
-def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement, deg_integration=14):
-    """Compute quadrature points and weights on curved triangles.
- 
-    Args:
-        ls_function: Zero-levelset function
-        ls_grad_func: Gradient of zero-levelset function
-        vertices: Array of vertex coordinates
-        faces: Array of face connectivity
-        interp_deg: Interpolation degree
-        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
-        Refinement: Refinement level
-        deg_integration: Degree of integration (default: 14)
-        
-    Returns:
-        Quadrature points, weights, and offset array
+def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement,fun_handle, deg_integration=14):
+    """"
+        Compute quadrature points and weights on curved triangles.
+
+        Args:
+            ls_function: callable
+                Zero-levelset function.
+            ls_grad_func: callable
+                Gradient of zero-levelset function.
+            vertices: ndarray
+                Array of vertex coordinates.
+            faces: ndarray
+                Array of face connectivity.
+            interp_deg: int
+                Interpolation degree.
+            lp_dgr: int
+                :math:`l_p`-norm, which is used to define the polynomial degree.
+            deg_integration: int, optional
+                Degree of integration (default: 14).
+
+        Returns:
+            ndarray, ndarray, ndarray
+                Quadrature points, weights, and offset array.
     """
 
     # initialization
@@ -97,10 +121,10 @@ def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_d
             # generate quadrature points
             if Refinement > 0:
                 index = quadrature_split_surf_tri(pnts_tri, np.array([[0, 1, 2]]), ls_function, ls_grad_func,
-                                                    interp_deg, lp_dgr, Refinement, deg_integration, pnts, ws, index)
+                                                    interp_deg, lp_dgr, Refinement,fun_handle, deg_integration, pnts, ws, index)
             else:
                 index = quadrature_surf_tri(ls_function, ls_grad_func,
-                                              pnts_tri, np.array([[0, 1, 2]]), interp_deg, lp_dgr, deg_integration, pnts, ws, index)
+                                              pnts_tri, np.array([[0, 1, 2]]), interp_deg, lp_dgr,fun_handle, deg_integration, pnts, ws, index)
 
     pnts = pnts[:index]
     ws = ws[:index]
@@ -109,52 +133,65 @@ def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_d
 
 
 def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
-                          lp_dgr, deg_integration, pnts, ws, index):
-    """For a mixed mesh, find the cell integration of the test function f. 
+                          lp_dgr,fun_handle, deg_integration, pnts, ws, index):
+    """
+        For a mixed mesh, find the cell integration of the test function f. 
 
-    Args:
-        ls_function: Zero-levelset function
-        ls_grad_func: Gradient of zero-levelset function
-        vertices: Array of vertex coordinates
-        faces: Array of face connectivity
-        interp_deg: Interpolation degree
-        lp_dgr: :math:`l_p`-norm, which is used to define the polynomial degree
-        deg_integration: Degree of integration
-        pnts: Quadrature points array
-        ws: Quadrature weights array
-        index: Current index in the arrays
+        Args:
+            ls_function: callable
+                Zero-levelset function.
+            ls_grad_func: callable
+                Gradient of zero-levelset function.
+            vertices: ndarray
+                Array of vertex coordinates.
+            faces: ndarray
+                Array of face connectivity.
+            interp_deg: int
+                Interpolation degree.
+            lp_dgr: int
+                :math:`l_p`-norm, which is used to define the polynomial degree.
+            deg_integration: int
+                Degree of integration.
+            pnts: ndarray
+                Quadrature points array.
+            ws: ndarray
+                Quadrature weights array.
+            index: int
+                Current index in the arrays.
 
-    Returns:
-        Updated index value
+        Returns:
+            int
+                Updated index value.
     """
     n_faces = faces.shape[0]
     n = interp_deg
     lp = lp_dgr
     pnts_q = np.zeros((1, 3), dtype=np.float64)
     pnts_qq = np.zeros((1, 3), dtype=np.float64)
-    ws0, cs =quadrule_on_flat(deg_integration)
+    ws0, cs =quadrule_on_simplex(interp_deg)
     nqp = ws0.shape[0]
     mi = MultiIndexSet.from_degree(
         spatial_dimension=2, poly_degree=n, lp_degree=lp)
     grid = Grid(mi)
 
     # Transform Chebyshev points from [-1,1]^2 to the reference simplex.
-    generating_points = transform(grid.unisolvent_nodes)
+    generating_points = transform(grid.unisolvent_nodes,duffy_transform=False)
     quad_ps = np.array([[(1.0 - generating_points[row1, 0] - generating_points[row1, 1]),
                        generating_points[row1, 0], generating_points[row1, 1]] for row1 in range(generating_points.shape[0])])
-    w, cs0 = quadrule_on_simplex(deg_integration)
+    w, cs0 = quadrule_on_simplex(interp_deg)
 
     # Transform quadrature points from the reference simplex to a unit square
-    ksi = inv_transform(cs0)
+    ksi = inv_transform(cs0,duffy_transform=False)
     # enlarge the size of quadrature points buffer if inadequate
     if index + n_faces * nqp > len(ws):
         n_new = 2 * len(ws) + n_faces * nqp
         ws.resize(n_new, refcheck=False)
         pnts.resize((n_new, 3), refcheck=False)
-        
     for fun_id in range(n_faces):
         pnts_p = np.array(
             [[0.0] * 3 for pid in range(grid.unisolvent_nodes.shape[0])])
+        pnts_func = np.array(
+            [[0.0] * 1 for pid in range(grid.unisolvent_nodes.shape[0])])
         for q in range(quad_ps.shape[0]):
             pnts_qq = (
                 quad_ps[q, 0] * vertices[faces[fun_id, 0]]
@@ -163,16 +200,17 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
 
             pnts_p[q] = SimpleImplicitSurfaceProjection(
                 ls_function, ls_grad_func, pnts_qq)
+            pnts_func[q]=fun_handle(pnts_p[q])
 
         interpol_coeffs =np.squeeze(dds(pnts_p, grid.tree))
         newt_poly  = NewtonPolynomial(mi, interpol_coeffs)
+
   
         # compute partial derivatives with respect to "s"
         ds_poly =newt_poly.diff([1, 0])
 
         # compute partial derivatives with respect to "t"
         dt_poly =newt_poly.diff([0, 1])
-
 
         for qq in range(nqp):
             # there are two alternatives to project quadrature points on the  manifold
@@ -200,61 +238,39 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
 
 
 def quadrature_split_surf_tri(vertices, faces, ls_function, ls_grad_func, interp_deg, lp_dgr,
-                                Refinement, deg_integration, pnts, ws, index):
-    """ Subdivide a mesh into smaller triangles and compute quadrature points and weights.
-    
-    Args:
-        vertices: Array of vertex coordinates
-        faces: Array of face connectivity
-        ls_function: Zero-levelset function
-        ls_grad_func: Gradient of zero-levelset function
-        interp_deg: Interpolation degree
-        lp_dgr: math:`l_p`-norm, which is used to define the polynomial degree
-        Refinement: Number of mesh refinements
-        deg_integration: Degree of integration
-        pnts: Quadrature points array
-        ws: Quadrature weights array
-        index: Current index in the arrays
+                                Refinement,fun_handle, deg_integration, pnts, ws, index):
+    """
+        Subdivide a mesh into smaller triangles and compute quadrature points and weights.
+        
+        Args:
+            vertices: ndarray
+                Array of vertex coordinates.
+            faces: ndarray
+                Array of face connectivity.
+            ls_function: callable
+                Zero-levelset function.
+            ls_grad_func: callable
+                Gradient of zero-levelset function.
+            interp_deg: int
+                Interpolation degree.
+            lp_dgr: int
+                :math:`l_p`-norm, which is used to define the polynomial degree.
+            Refinement: int
+                Number of mesh refinements.
+            deg_integration: int
+                Degree of integration.
+            pnts: ndarray
+                Quadrature points array.
+            ws: ndarray
+                Quadrature weights array.
         
     Returns:
-        Updated index value
+        Updated index
     """
     for i in range(Refinement):
         vertices, faces = subdivide(vertices, faces)
 
     index = quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
-                                  lp_dgr, deg_integration, pnts, ws, index)
+                                  lp_dgr,fun_handle, deg_integration, pnts, ws, index)
 
     return index
-
-
-
-
-def SimpleImplicitSurfaceProjection(phi: callable, dphi: callable, x: np.ndarray, max_iter=10) -> np.ndarray:
-    """Closest-point projection to surface given by an implicit function using a simple projection algorithm.
-    
-    Args:
-        phi: Zero-levelset function
-        dphi: Gradient of zero-levelset function
-        x: The point to be projected
-        max_iter: Maximum number of iterations for the projection
-        
-    Returns:
-        The projection point"""
-
-    tol = 10 * np.finfo(np.float64).eps
-    phi_v = phi(x)
-    for i in range(max_iter):
-        grad_phi = dphi(x)
-        grad_phi_norm = np.sum(grad_phi**2)
-        normalize = phi_v / grad_phi_norm
-
-        if np.sqrt(phi_v * normalize) < tol:
-            break
-
-        for j in range(len(x)):
-            x[j] -= grad_phi[j] * normalize
-
-        phi_v = phi(x)
-
-    return x
