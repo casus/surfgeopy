@@ -60,7 +60,7 @@ is an $n^{\text{th}}$ order approximation of the smooth surface $S$.
 <img src="images/genus_pict.png" alt="drawing" width="280"/>
 <img src="images/torus_pict_R=0.5.png" alt="drawing" width="280"/>
 
-<img src="images/G_bonnet_for_genus_2_linf.png" alt="drawing" width="280"/>
+<img src="images/G_bonnet_for_bionc_linf.png" alt="drawing" width="280"/>
 <img src="images/G_bonnet_for_genus_2_linf.png" alt="drawing" width="280"/>
 <img src="images/G_bonnet_for_torus_linf2_new.png" alt="drawing" width="280"/>
 
