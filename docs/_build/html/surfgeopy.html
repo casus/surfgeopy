@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>surfgeopy package &mdash; surfgeopy 1.0.0-alpha documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="surfgeopy" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            surfgeopy
+              <img src="_static/surfgeopy_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">🛠️ Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">surfgeopy</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/sphere.html">Integral Computation Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#imports">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#spherical-harmonics">Spherical Harmonics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id1">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id2">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id3">Polynomial degree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id4">Result Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-torus">Gauss-Bonnet Theorem on Torus</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#imports">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#degree-of-polynomial">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-a-genus-2-surface">Gauss Bonnet theorem on a Genus 2 Surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id1">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id2">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id3">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id4">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-ellipsoid">Gauss Bonnet theorem on ellipsoid</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id5">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id6">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id7">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id8">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-the-first-dziuks-surface">Gauss Bonnet theorem on the first Dziuk’s surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id9">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id10">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id11">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id12">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-bioconcave-surface">Gauss Bonnet theorem on Bioconcave surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id13">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id14">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id15">Result Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">surfgeopy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">surfgeopy</a></li>
+      <li class="breadcrumb-item active">surfgeopy package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/surfgeopy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="surfgeopy-package">
+<h1>surfgeopy package<a class="headerlink" href="#surfgeopy-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-surfgeopy.quadrature_points">
+<span id="surfgeopy-quadrature-points-module"></span><h2>surfgeopy.quadrature_points module<a class="headerlink" href="#module-surfgeopy.quadrature_points" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_points.quadrule_on_flat">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.quadrature_points.</span></span><span class="sig-name descname"><span class="pre">quadrule_on_flat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points.html#quadrule_on_flat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_points.quadrule_on_flat" title="Permalink to this definition"></a></dt>
+<dd><p>Quadrature rule</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deg</strong> (<em>int</em>) – Algebraic degree of precision of the rule.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>ndarray</em>) – n-by-1 array of single or double, weights of quadrature points.</p></li>
+<li><p><strong>quad_ps</strong> (<em>ndarray</em>) – n-by-3 array of single or double, natural coordinates of quadrature points.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_points.quadrule_on_simplex">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.quadrature_points.</span></span><span class="sig-name descname"><span class="pre">quadrule_on_simplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points.html#quadrule_on_simplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_points.quadrule_on_simplex" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deg</strong> (<em>Algebraic degree of precision of the rule.</em>) – Algebraic degree of precision of the rule.</p></li>
+<li><p><strong>0</strong><strong>]</strong> (<em>CUBATURE RULE ON THE SIMPLEX</em><em> [</em><em>0 0; 0 1; 1</em>) – </p></li>
+<li><p><strong>Legend</strong> – </p></li>
+<li><p><strong>#DEG</strong> (<em>algebraic degree of precision.</em>) – </p></li>
+<li><p><strong>#CARD</strong> (<em>cardinality of the pointset.</em>) – </p></li>
+<li><p><strong>#W-</strong> (<em>negative weights.</em>) – </p></li>
+<li><p><strong>#PT.O</strong> (<em>points outside the simplex</em><em> [</em><em>0 0; 1 0; 0 1</em><em>]</em><em>.</em>) – </p></li>
+<li><p><strong>#M.E.</strong> (<em>maximum moment error in inf norm.</em>) – </p></li>
+<li><p><strong>points</strong> (<em>Statistics of quadrature</em>) – </p></li>
+<li><p><strong>M.E.</strong> (<em>#</em><em> | </em><em>DEG</em><em> | </em><em>CARD</em><em> | </em><em>W-</em><em> | </em><em>PT.O</em><em>|</em>) – </p></li>
+<li><p><strong>#------------------------------------</strong> – </p></li>
+<li><p><strong>1.92e-16</strong> (<em>#</em><em> |   </em><em>1</em><em> |   </em><em>1</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.18e-16</strong> (<em>#</em><em> |   </em><em>2</em><em> |   </em><em>3</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>2.15e-16</strong> (<em>#</em><em> |   </em><em>3</em><em> |   </em><em>4</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.39e-16</strong> (<em>#</em><em> |   </em><em>4</em><em> |   </em><em>6</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.60e-16</strong> (<em>#</em><em> |   </em><em>5</em><em> |   </em><em>7</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.08e-15</strong> (<em>#</em><em> |   </em><em>6</em><em> |  </em><em>11</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.07e-16</strong> (<em>#</em><em> |   </em><em>7</em><em> |  </em><em>12</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>8.05e-16</strong> (<em>#</em><em> |   </em><em>8</em><em> |  </em><em>16</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.26e-16</strong> (<em>#</em><em> |   </em><em>9</em><em> |  </em><em>19</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.22e-16</strong> (<em>#</em><em> |  </em><em>10</em><em> |  </em><em>24</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.64e-15</strong> (<em>#</em><em> |  </em><em>11</em><em> |  </em><em>27</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.61e-15</strong> (<em>#</em><em> |  </em><em>12</em><em> |  </em><em>32</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.05e-16</strong> (<em>#</em><em> |  </em><em>13</em><em> |  </em><em>36</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.37e-16</strong> (<em>#</em><em> |  </em><em>14</em><em> |  </em><em>42</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.00e-16</strong> (<em>#</em><em> |  </em><em>15</em><em> |  </em><em>46</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.67e-16</strong> (<em>#</em><em> |  </em><em>16</em><em> |  </em><em>52</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.83e-16</strong> (<em>#</em><em> |  </em><em>17</em><em> |  </em><em>57</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>6.11e-16</strong> (<em>#</em><em> |  </em><em>18</em><em> |  </em><em>66</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.16e-16</strong> (<em>#</em><em> |  </em><em>19</em><em> |  </em><em>70</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.89e-16</strong> (<em>#</em><em> |  </em><em>20</em><em> |  </em><em>78</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.64e-16</strong> (<em>#</em><em> |  </em><em>21</em><em> |  </em><em>85</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.56e-16</strong> (<em>#</em><em> |  </em><em>22</em><em> |  </em><em>93</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>6.66e-16</strong> (<em>#</em><em> |  </em><em>23</em><em> | </em><em>100</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.81e-16</strong> (<em>#</em><em> |  </em><em>24</em><em> | </em><em>109</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.41e-16</strong> (<em>#</em><em> |  </em><em>25</em><em> | </em><em>117</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>0</strong><strong>]</strong><strong>.</strong> (<em>CUBATURE RULE ON THE SIMPLEX</em><em> [</em><em>0 0; 0 1; 1</em>) – </p></li>
+<li><p><strong>--------------------------------------------------------------------</strong> – </p></li>
+<li><p><strong>Input</strong> – </p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>deg</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>N-by-1 array (single or double), weights of quadrature points</em>)</p></li>
+<li><p><strong>quad_ps</strong> (<em>N-by-2 array (single or double),</em>) – natural coordinates of quadrature points</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-surfgeopy.quadrature_points_gl">
+<span id="surfgeopy-quadrature-points-gl-module"></span><h2>surfgeopy.quadrature_points_gl module<a class="headerlink" href="#module-surfgeopy.quadrature_points_gl" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_points_gl.gauss_legendre_square">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.quadrature_points_gl.</span></span><span class="sig-name descname"><span class="pre">gauss_legendre_square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points_gl.html#gauss_legendre_square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_points_gl.gauss_legendre_square" title="Permalink to this definition"></a></dt>
+<dd><p>Gauss-Legendre cubature rule on the square [-1, 1]^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deg</strong> (<em>int</em>) – Algebraic degree of precision of the rule.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>ndarray</em>) – n-by-1 array of single or double, weights of quadrature points.</p></li>
+<li><p><strong>quad_ps</strong> (<em>ndarray</em>) – n-by-2 array of single or double, natural coordinates of quadrature points.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_points_gl.q_gauss_legendre">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.quadrature_points_gl.</span></span><span class="sig-name descname"><span class="pre">q_gauss_legendre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([-</span> <span class="pre">1,</span> <span class="pre">1])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points_gl.html#q_gauss_legendre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_points_gl.q_gauss_legendre" title="Permalink to this definition"></a></dt>
+<dd><p>Generate quadrature weights and nodes for Gauss-Legendre quadrature rule.</p>
+<p>An n-point Gauss-Legendre quadrature rule is of degree 2n-1;
+that is, it integrates all polynomials up to degree 2n-1 exactly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Number of sample points and weights. It must be &gt;= 1.</p></li>
+<li><p><strong>Domain</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Refers to the domain of integration [a, b].
+The default domain is the bi-unit interval [-1, 1].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – 1-D ndarray containing the sample points.</p></li>
+<li><p><strong>w</strong> (<em>ndarray</em>) – 1-D ndarray containing the weights.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The function constructs the symmetric tridiagonal matrix and computes
+the eigenvalues and eigenvectors to obtain the quadrature points and weights.</p>
+<p>The next steps ensure that zero is zero, and the points and weights are symmetric.</p>
+<p>If the integration domain [a, b] is different from the default [-1, 1],
+the points and weights are transformed accordingly.</p>
+</dd></dl>
+
+</section>
+<section id="module-surfgeopy.remesh">
+<span id="surfgeopy-remesh-module"></span><h2>surfgeopy.remesh module<a class="headerlink" href="#module-surfgeopy.remesh" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.remesh.faces_to_edges">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.remesh.</span></span><span class="sig-name descname"><span class="pre">faces_to_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#faces_to_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.remesh.faces_to_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Given a list of faces (n,3), return a list of edges (n*3,2)
+:param faces: Vertex indices representing faces
+:type faces: (n, 3) int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edges</strong> – Vertex indices representing edges</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(n*3, 2) int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.remesh.hashable_rows">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.remesh.</span></span><span class="sig-name descname"><span class="pre">hashable_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#hashable_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.remesh.hashable_rows" title="Permalink to this definition"></a></dt>
+<dd><p>We turn our array into integers based on the precision
+given by digits and then put them in a hashable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>(</em><em>n</em><em>, </em><em>m</em><em>) </em><em>array</em>) – Input data</p></li>
+<li><p><strong>digits</strong> (<em>int</em><em> or </em><em>None</em>) – How many digits to add to hash if data is floating point
+If None, tol.merge will be used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>hashable</strong> – Custom data type which can be sorted
+or used as hash keys</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(n,) array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.remesh.subdivide">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.remesh.</span></span><span class="sig-name descname"><span class="pre">subdivide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertex_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#subdivide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.remesh.subdivide" title="Permalink to this definition"></a></dt>
+<dd><p>Subdivide a mesh into smaller triangles.</p>
+<p>Note that if <cite>face_index</cite> is passed, only those
+faces will be subdivided and their neighbors won’t
+be modified making the mesh no longer “watertight.”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>(</em><em>n</em><em>, </em><em>3</em><em>) </em><em>float</em>) – Vertices in space</p></li>
+<li><p><strong>faces</strong> (<em>(</em><em>m</em><em>, </em><em>3</em><em>) </em><em>int</em>) – Indexes of vertices which make up triangular faces</p></li>
+<li><p><strong>face_index</strong> (<em>faces to subdivide.</em>) – if None: all faces of mesh will be subdivided
+if (n,) int array of indices: only specified faces</p></li>
+<li><p><strong>vertex_attributes</strong> (<em>dict</em>) – Contains (n, d) attribute data</p></li>
+<li><p><strong>return_index</strong> (<em>bool</em>) – If True, return index of original face for new faces</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>new_vertices</strong> (<em>(q, 3) float</em>) – Vertices in space</p></li>
+<li><p><strong>new_faces</strong> (<em>(p, 3) int</em>) – Remeshed faces</p></li>
+<li><p><strong>index_dict</strong> (<em>dict</em>) – Only returned if <cite>return_index</cite>, {index of
+original face : index of new faces}.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.remesh.unique_ordered">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.remesh.</span></span><span class="sig-name descname"><span class="pre">unique_ordered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#unique_ordered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.remesh.unique_ordered" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the same as np.unique, but ordered as per the
+first occurrence of the unique value in data.
+.. rubric:: Examples</p>
+<p>In [1]: a = [0, 3, 3, 4, 1, 3, 0, 3, 2, 1]
+In [2]: np.unique(a)
+Out[2]: array([0, 1, 2, 3, 4])
+In [3]: trimesh.grouping.unique_ordered(a)
+Out[3]: array([0, 3, 4, 1, 2])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.remesh.unique_rows">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.remesh.</span></span><span class="sig-name descname"><span class="pre">unique_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#unique_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.remesh.unique_rows" title="Permalink to this definition"></a></dt>
+<dd><p>Returns indices of unique rows. It will return the
+first occurrence of a row that is duplicated:
+[[1,2], [3,4], [1,2]] will return [0,1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>(</em><em>n</em><em>, </em><em>m</em><em>) </em><em>array</em>) – Floating point data</p></li>
+<li><p><strong>digits</strong> (<em>int</em><em> or </em><em>None</em>) – How many digits to consider</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>unique</strong> (<em>(j,) int</em>) – Index in data which is a unique row</p></li>
+<li><p><strong>inverse</strong> (<em>(n,) int</em>) – Array to reconstruct original
+Example: data[unique][inverse] == data</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-surfgeopy.surf_integration">
+<span id="surfgeopy-surf-integration-module"></span><h2>surfgeopy.surf_integration module<a class="headerlink" href="#module-surfgeopy.surf_integration" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.surf_integration.compute_surf_quadrature">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.surf_integration.</span></span><span class="sig-name descname"><span class="pre">compute_surf_quadrature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Refinement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pull_back_Gauss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#compute_surf_quadrature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.surf_integration.compute_surf_quadrature" title="Permalink to this definition"></a></dt>
+<dd><p>Compute quadrature points and weights on curved triangles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int, optional
+Degree of integration (default: 14).</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray, ndarray, ndarray
+Quadrature points, weights, and offset array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.surf_integration.integration">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.surf_integration.</span></span><span class="sig-name descname"><span class="pre">integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Refinement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration=-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#integration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.surf_integration.integration" title="Permalink to this definition"></a></dt>
+<dd><p>Compute integration of a function over curved triangles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>mesh</strong> (<em>str</em>) – The file path to the MAT file containing mesh data.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>Refinement</strong> – int
+Refinement level.</p></li>
+<li><p><strong>fun_handle</strong> – callable, optional
+Function to be evaluated on each quadrature point (default: lambda _: 1.0).</p></li>
+<li><p><strong>deg_integration</strong> – int, optional
+Degree of integration (default: -1, use default configuration).</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integration values for each curved triangle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.surf_integration.quadrature_split_surf_tri">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.surf_integration.</span></span><span class="sig-name descname"><span class="pre">quadrature_split_surf_tri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#quadrature_split_surf_tri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.surf_integration.quadrature_split_surf_tri" title="Permalink to this definition"></a></dt>
+<dd><p>For a mixed mesh, find the cell integration of the test function f.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of the zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int
+Degree of integration.</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+<li><p><strong>pnts</strong> – ndarray
+Quadrature points array.</p></li>
+<li><p><strong>ws</strong> – ndarray
+Quadrature weights array.</p></li>
+<li><p><strong>index</strong> – int
+Current index in the arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>int</dt><dd><p>Updated index value.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.surf_integration.quadrature_surf_tri">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.surf_integration.</span></span><span class="sig-name descname"><span class="pre">quadrature_surf_tri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#quadrature_surf_tri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.surf_integration.quadrature_surf_tri" title="Permalink to this definition"></a></dt>
+<dd><p>For a mixed mesh, find the cell integration of the test function f.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int
+Degree of integration.</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+<li><p><strong>pnts</strong> – ndarray
+Quadrature points array.</p></li>
+<li><p><strong>ws</strong> – ndarray
+Quadrature weights array.</p></li>
+<li><p><strong>index</strong> – int
+Current index in the arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>int</dt><dd><p>Updated index value.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-surfgeopy.utils">
+<span id="surfgeopy-utils-module"></span><h2>surfgeopy.utils module<a class="headerlink" href="#module-surfgeopy.utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.SimpleImplicitSurfaceProjection">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">SimpleImplicitSurfaceProjection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/surfgeopy/utils.html#SimpleImplicitSurfaceProjection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.SimpleImplicitSurfaceProjection" title="Permalink to this definition"></a></dt>
+<dd><p>Closest-point projection to surface given by an implicit function using a simple projection algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> – Zero-levelset function</p></li>
+<li><p><strong>dphi</strong> – Gradient of zero-levelset function</p></li>
+<li><p><strong>x</strong> – The point to be projected</p></li>
+<li><p><strong>max_iter</strong> – Maximum number of iterations for the projection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The projection point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.compute_norm">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">compute_norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#compute_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.compute_norm" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the Euclidean norm of a given vector.</p>
+<p>This function uses Numba’s just-in-time (JIT) compilation for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vec</strong> (<em>numpy.ndarray</em>) – Input vector for which the Euclidean norm needs to be computed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Euclidean norm of the input vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.decimal_to_digits">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">decimal_to_digits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decimal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#decimal_to_digits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.decimal_to_digits" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of digits to the first nonzero decimal.
+:param decimal:
+:type decimal: float
+:param min_digits:
+:type min_digits: int, minimum number of digits to return</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>digits</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, number of digits to the first nonzero decimal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.float_to_int">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">float_to_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.int32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#float_to_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.float_to_int" title="Permalink to this definition"></a></dt>
+<dd><p>Given a numpy array of float/bool/int, return as integers.
+:param data: Input data
+:type data: (n, d) float, int, or bool
+:param digits: Precision for float conversion
+:type digits: float or int
+:param dtype: What datatype should result be returned as
+:type dtype: numpy.dtype</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>as_int</strong> – Data as integers</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(n, d) int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.max_edge_length">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">max_edge_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#max_edge_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.max_edge_length" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the maximum edge length of a triangle defined by its vertices.</p>
+<p>This function uses Numba’s just-in-time (JIT) compilation for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xs</strong> (<em>numpy.ndarray</em>) – Array of shape (3, N) representing N triangles, where each row contains the
+coordinates of the vertices of a triangle in 3D space.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum edge length among all the triangles.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.pullback">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">pullback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qpoint_triangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duffy_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#pullback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.pullback" title="Permalink to this definition"></a></dt>
+<dd><p>Transform quadrature points from the reference simplex to a unit square.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qpoint_triangle</strong> (<em>ndarray</em>) – Quadrature points on the reference simplex.</p></li>
+<li><p><strong>duffy_transform</strong> (<em>bool</em>) – Whether to apply Duffy’s transform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed points on the [-1, 1]^2.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.pushforward">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">pushforward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unisolvent_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duffy_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#pushforward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.pushforward" title="Permalink to this definition"></a></dt>
+<dd><p>Transform Chebyshev points from [-1, 1]^2 to a reference simplex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unisolvent_nodes</strong> (<em>ndarray</em>) – Chebyshev points on the square.</p></li>
+<li><p><strong>duffy_transform</strong> (<em>bool</em>) – Whether to apply Duffy’s transform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed points on the simplex.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.utils.read_mesh_data">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.utils.</span></span><span class="sig-name descname"><span class="pre">read_mesh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#read_mesh_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.utils.read_mesh_data" title="Permalink to this definition"></a></dt>
+<dd><p>Read mesh data from a MAT file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh_path</strong> (<em>str</em>) – The file path to the MAT file containing mesh data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ‘vertices’ data from the MAT file.
+faces (numpy.ndarray): The ‘faces’ data from the MAT file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vertices (numpy.ndarray)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified file does not exist.</p></li>
+<li><p><strong>Exception</strong> – If an error occurs during file reading.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-surfgeopy.version">
+<span id="surfgeopy-version-module"></span><h2>surfgeopy.version module<a class="headerlink" href="#module-surfgeopy.version" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-surfgeopy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-surfgeopy" title="Permalink to this heading"></a></h2>
+<p>This is the curved_integration package init.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.SimpleImplicitSurfaceProjection">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">SimpleImplicitSurfaceProjection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/surfgeopy/utils.html#SimpleImplicitSurfaceProjection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.SimpleImplicitSurfaceProjection" title="Permalink to this definition"></a></dt>
+<dd><p>Closest-point projection to surface given by an implicit function using a simple projection algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> – Zero-levelset function</p></li>
+<li><p><strong>dphi</strong> – Gradient of zero-levelset function</p></li>
+<li><p><strong>x</strong> – The point to be projected</p></li>
+<li><p><strong>max_iter</strong> – Maximum number of iterations for the projection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The projection point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.compute_norm">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">compute_norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#compute_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.compute_norm" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the Euclidean norm of a given vector.</p>
+<p>This function uses Numba’s just-in-time (JIT) compilation for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vec</strong> (<em>numpy.ndarray</em>) – Input vector for which the Euclidean norm needs to be computed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Euclidean norm of the input vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.compute_surf_quadrature">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">compute_surf_quadrature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Refinement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pull_back_Gauss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#compute_surf_quadrature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.compute_surf_quadrature" title="Permalink to this definition"></a></dt>
+<dd><p>Compute quadrature points and weights on curved triangles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int, optional
+Degree of integration (default: 14).</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray, ndarray, ndarray
+Quadrature points, weights, and offset array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.decimal_to_digits">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">decimal_to_digits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decimal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#decimal_to_digits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.decimal_to_digits" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of digits to the first nonzero decimal.
+:param decimal:
+:type decimal: float
+:param min_digits:
+:type min_digits: int, minimum number of digits to return</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>digits</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, number of digits to the first nonzero decimal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.faces_to_edges">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">faces_to_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#faces_to_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.faces_to_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Given a list of faces (n,3), return a list of edges (n*3,2)
+:param faces: Vertex indices representing faces
+:type faces: (n, 3) int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edges</strong> – Vertex indices representing edges</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(n*3, 2) int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.float_to_int">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">float_to_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.int32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#float_to_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.float_to_int" title="Permalink to this definition"></a></dt>
+<dd><p>Given a numpy array of float/bool/int, return as integers.
+:param data: Input data
+:type data: (n, d) float, int, or bool
+:param digits: Precision for float conversion
+:type digits: float or int
+:param dtype: What datatype should result be returned as
+:type dtype: numpy.dtype</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>as_int</strong> – Data as integers</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(n, d) int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.gauss_legendre_square">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">gauss_legendre_square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points_gl.html#gauss_legendre_square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.gauss_legendre_square" title="Permalink to this definition"></a></dt>
+<dd><p>Gauss-Legendre cubature rule on the square [-1, 1]^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deg</strong> (<em>int</em>) – Algebraic degree of precision of the rule.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>ndarray</em>) – n-by-1 array of single or double, weights of quadrature points.</p></li>
+<li><p><strong>quad_ps</strong> (<em>ndarray</em>) – n-by-2 array of single or double, natural coordinates of quadrature points.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.hashable_rows">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">hashable_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#hashable_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.hashable_rows" title="Permalink to this definition"></a></dt>
+<dd><p>We turn our array into integers based on the precision
+given by digits and then put them in a hashable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>(</em><em>n</em><em>, </em><em>m</em><em>) </em><em>array</em>) – Input data</p></li>
+<li><p><strong>digits</strong> (<em>int</em><em> or </em><em>None</em>) – How many digits to add to hash if data is floating point
+If None, tol.merge will be used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>hashable</strong> – Custom data type which can be sorted
+or used as hash keys</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(n,) array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.integration">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Refinement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration=-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#integration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.integration" title="Permalink to this definition"></a></dt>
+<dd><p>Compute integration of a function over curved triangles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>mesh</strong> (<em>str</em>) – The file path to the MAT file containing mesh data.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>Refinement</strong> – int
+Refinement level.</p></li>
+<li><p><strong>fun_handle</strong> – callable, optional
+Function to be evaluated on each quadrature point (default: lambda _: 1.0).</p></li>
+<li><p><strong>deg_integration</strong> – int, optional
+Degree of integration (default: -1, use default configuration).</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integration values for each curved triangle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.max_edge_length">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">max_edge_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#max_edge_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.max_edge_length" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the maximum edge length of a triangle defined by its vertices.</p>
+<p>This function uses Numba’s just-in-time (JIT) compilation for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xs</strong> (<em>numpy.ndarray</em>) – Array of shape (3, N) representing N triangles, where each row contains the
+coordinates of the vertices of a triangle in 3D space.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum edge length among all the triangles.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.pullback">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">pullback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qpoint_triangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duffy_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#pullback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.pullback" title="Permalink to this definition"></a></dt>
+<dd><p>Transform quadrature points from the reference simplex to a unit square.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qpoint_triangle</strong> (<em>ndarray</em>) – Quadrature points on the reference simplex.</p></li>
+<li><p><strong>duffy_transform</strong> (<em>bool</em>) – Whether to apply Duffy’s transform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed points on the [-1, 1]^2.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.pushforward">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">pushforward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unisolvent_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duffy_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#pushforward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.pushforward" title="Permalink to this definition"></a></dt>
+<dd><p>Transform Chebyshev points from [-1, 1]^2 to a reference simplex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unisolvent_nodes</strong> (<em>ndarray</em>) – Chebyshev points on the square.</p></li>
+<li><p><strong>duffy_transform</strong> (<em>bool</em>) – Whether to apply Duffy’s transform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed points on the simplex.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.q_gauss_legendre">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">q_gauss_legendre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([-</span> <span class="pre">1,</span> <span class="pre">1])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points_gl.html#q_gauss_legendre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.q_gauss_legendre" title="Permalink to this definition"></a></dt>
+<dd><p>Generate quadrature weights and nodes for Gauss-Legendre quadrature rule.</p>
+<p>An n-point Gauss-Legendre quadrature rule is of degree 2n-1;
+that is, it integrates all polynomials up to degree 2n-1 exactly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Number of sample points and weights. It must be &gt;= 1.</p></li>
+<li><p><strong>Domain</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Refers to the domain of integration [a, b].
+The default domain is the bi-unit interval [-1, 1].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – 1-D ndarray containing the sample points.</p></li>
+<li><p><strong>w</strong> (<em>ndarray</em>) – 1-D ndarray containing the weights.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The function constructs the symmetric tridiagonal matrix and computes
+the eigenvalues and eigenvectors to obtain the quadrature points and weights.</p>
+<p>The next steps ensure that zero is zero, and the points and weights are symmetric.</p>
+<p>If the integration domain [a, b] is different from the default [-1, 1],
+the points and weights are transformed accordingly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_split_surf_tri">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">quadrature_split_surf_tri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#quadrature_split_surf_tri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_split_surf_tri" title="Permalink to this definition"></a></dt>
+<dd><p>For a mixed mesh, find the cell integration of the test function f.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of the zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int
+Degree of integration.</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+<li><p><strong>pnts</strong> – ndarray
+Quadrature points array.</p></li>
+<li><p><strong>ws</strong> – ndarray
+Quadrature weights array.</p></li>
+<li><p><strong>index</strong> – int
+Current index in the arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>int</dt><dd><p>Updated index value.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrature_surf_tri">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">quadrature_surf_tri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls_grad_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_deg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_dgr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_integration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_rule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/surf_integration.html#quadrature_surf_tri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrature_surf_tri" title="Permalink to this definition"></a></dt>
+<dd><p>For a mixed mesh, find the cell integration of the test function f.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_function</strong> – callable
+Zero-levelset function.</p></li>
+<li><p><strong>ls_grad_func</strong> – callable
+Gradient of zero-levelset function.</p></li>
+<li><p><strong>vertices</strong> – ndarray
+Array of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> – ndarray
+Array of face connectivity.</p></li>
+<li><p><strong>interp_deg</strong> – int
+Interpolation degree.</p></li>
+<li><p><strong>lp_dgr</strong> – int
+<span class="math notranslate nohighlight">\(l_p\)</span>-norm, which is used to define the polynomial degree.</p></li>
+<li><p><strong>deg_integration</strong> – int
+Degree of integration.</p></li>
+<li><p><strong>quadrature_rule</strong> – str, optional
+Quadrature rule type (‘Gauss_Legendre’ or ‘Gauss_Simplex’).</p></li>
+<li><p><strong>pnts</strong> – ndarray
+Quadrature points array.</p></li>
+<li><p><strong>ws</strong> – ndarray
+Quadrature weights array.</p></li>
+<li><p><strong>index</strong> – int
+Current index in the arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>int</dt><dd><p>Updated index value.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrule_on_flat">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">quadrule_on_flat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points.html#quadrule_on_flat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrule_on_flat" title="Permalink to this definition"></a></dt>
+<dd><p>Quadrature rule</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deg</strong> (<em>int</em>) – Algebraic degree of precision of the rule.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>ndarray</em>) – n-by-1 array of single or double, weights of quadrature points.</p></li>
+<li><p><strong>quad_ps</strong> (<em>ndarray</em>) – n-by-3 array of single or double, natural coordinates of quadrature points.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.quadrule_on_simplex">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">quadrule_on_simplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/quadrature_points.html#quadrule_on_simplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.quadrule_on_simplex" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deg</strong> (<em>Algebraic degree of precision of the rule.</em>) – Algebraic degree of precision of the rule.</p></li>
+<li><p><strong>0</strong><strong>]</strong> (<em>CUBATURE RULE ON THE SIMPLEX</em><em> [</em><em>0 0; 0 1; 1</em>) – </p></li>
+<li><p><strong>Legend</strong> – </p></li>
+<li><p><strong>#DEG</strong> (<em>algebraic degree of precision.</em>) – </p></li>
+<li><p><strong>#CARD</strong> (<em>cardinality of the pointset.</em>) – </p></li>
+<li><p><strong>#W-</strong> (<em>negative weights.</em>) – </p></li>
+<li><p><strong>#PT.O</strong> (<em>points outside the simplex</em><em> [</em><em>0 0; 1 0; 0 1</em><em>]</em><em>.</em>) – </p></li>
+<li><p><strong>#M.E.</strong> (<em>maximum moment error in inf norm.</em>) – </p></li>
+<li><p><strong>points</strong> (<em>Statistics of quadrature</em>) – </p></li>
+<li><p><strong>M.E.</strong> (<em>#</em><em> | </em><em>DEG</em><em> | </em><em>CARD</em><em> | </em><em>W-</em><em> | </em><em>PT.O</em><em>|</em>) – </p></li>
+<li><p><strong>#------------------------------------</strong> – </p></li>
+<li><p><strong>1.92e-16</strong> (<em>#</em><em> |   </em><em>1</em><em> |   </em><em>1</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.18e-16</strong> (<em>#</em><em> |   </em><em>2</em><em> |   </em><em>3</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>2.15e-16</strong> (<em>#</em><em> |   </em><em>3</em><em> |   </em><em>4</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.39e-16</strong> (<em>#</em><em> |   </em><em>4</em><em> |   </em><em>6</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.60e-16</strong> (<em>#</em><em> |   </em><em>5</em><em> |   </em><em>7</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.08e-15</strong> (<em>#</em><em> |   </em><em>6</em><em> |  </em><em>11</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.07e-16</strong> (<em>#</em><em> |   </em><em>7</em><em> |  </em><em>12</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>8.05e-16</strong> (<em>#</em><em> |   </em><em>8</em><em> |  </em><em>16</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.26e-16</strong> (<em>#</em><em> |   </em><em>9</em><em> |  </em><em>19</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.22e-16</strong> (<em>#</em><em> |  </em><em>10</em><em> |  </em><em>24</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.64e-15</strong> (<em>#</em><em> |  </em><em>11</em><em> |  </em><em>27</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>1.61e-15</strong> (<em>#</em><em> |  </em><em>12</em><em> |  </em><em>32</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>3.05e-16</strong> (<em>#</em><em> |  </em><em>13</em><em> |  </em><em>36</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.37e-16</strong> (<em>#</em><em> |  </em><em>14</em><em> |  </em><em>42</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.00e-16</strong> (<em>#</em><em> |  </em><em>15</em><em> |  </em><em>46</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.67e-16</strong> (<em>#</em><em> |  </em><em>16</em><em> |  </em><em>52</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.83e-16</strong> (<em>#</em><em> |  </em><em>17</em><em> |  </em><em>57</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>6.11e-16</strong> (<em>#</em><em> |  </em><em>18</em><em> |  </em><em>66</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.16e-16</strong> (<em>#</em><em> |  </em><em>19</em><em> |  </em><em>70</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.89e-16</strong> (<em>#</em><em> |  </em><em>20</em><em> |  </em><em>78</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>4.64e-16</strong> (<em>#</em><em> |  </em><em>21</em><em> |  </em><em>85</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.56e-16</strong> (<em>#</em><em> |  </em><em>22</em><em> |  </em><em>93</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>6.66e-16</strong> (<em>#</em><em> |  </em><em>23</em><em> | </em><em>100</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>7.81e-16</strong> (<em>#</em><em> |  </em><em>24</em><em> | </em><em>109</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>5.41e-16</strong> (<em>#</em><em> |  </em><em>25</em><em> | </em><em>117</em><em> |   </em><em>0</em><em> |   </em><em>0</em><em> |</em>) – </p></li>
+<li><p><strong>0</strong><strong>]</strong><strong>.</strong> (<em>CUBATURE RULE ON THE SIMPLEX</em><em> [</em><em>0 0; 0 1; 1</em>) – </p></li>
+<li><p><strong>--------------------------------------------------------------------</strong> – </p></li>
+<li><p><strong>Input</strong> – </p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>deg</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>weights_ps</strong> (<em>N-by-1 array (single or double), weights of quadrature points</em>)</p></li>
+<li><p><strong>quad_ps</strong> (<em>N-by-2 array (single or double),</em>) – natural coordinates of quadrature points</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.read_mesh_data">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">read_mesh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/utils.html#read_mesh_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.read_mesh_data" title="Permalink to this definition"></a></dt>
+<dd><p>Read mesh data from a MAT file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh_path</strong> (<em>str</em>) – The file path to the MAT file containing mesh data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ‘vertices’ data from the MAT file.
+faces (numpy.ndarray): The ‘faces’ data from the MAT file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vertices (numpy.ndarray)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified file does not exist.</p></li>
+<li><p><strong>Exception</strong> – If an error occurs during file reading.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.subdivide">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">subdivide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertex_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#subdivide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.subdivide" title="Permalink to this definition"></a></dt>
+<dd><p>Subdivide a mesh into smaller triangles.</p>
+<p>Note that if <cite>face_index</cite> is passed, only those
+faces will be subdivided and their neighbors won’t
+be modified making the mesh no longer “watertight.”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>(</em><em>n</em><em>, </em><em>3</em><em>) </em><em>float</em>) – Vertices in space</p></li>
+<li><p><strong>faces</strong> (<em>(</em><em>m</em><em>, </em><em>3</em><em>) </em><em>int</em>) – Indexes of vertices which make up triangular faces</p></li>
+<li><p><strong>face_index</strong> (<em>faces to subdivide.</em>) – if None: all faces of mesh will be subdivided
+if (n,) int array of indices: only specified faces</p></li>
+<li><p><strong>vertex_attributes</strong> (<em>dict</em>) – Contains (n, d) attribute data</p></li>
+<li><p><strong>return_index</strong> (<em>bool</em>) – If True, return index of original face for new faces</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>new_vertices</strong> (<em>(q, 3) float</em>) – Vertices in space</p></li>
+<li><p><strong>new_faces</strong> (<em>(p, 3) int</em>) – Remeshed faces</p></li>
+<li><p><strong>index_dict</strong> (<em>dict</em>) – Only returned if <cite>return_index</cite>, {index of
+original face : index of new faces}.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.unique_ordered">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">unique_ordered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#unique_ordered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.unique_ordered" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the same as np.unique, but ordered as per the
+first occurrence of the unique value in data.
+.. rubric:: Examples</p>
+<p>In [1]: a = [0, 3, 3, 4, 1, 3, 0, 3, 2, 1]
+In [2]: np.unique(a)
+Out[2]: array([0, 1, 2, 3, 4])
+In [3]: trimesh.grouping.unique_ordered(a)
+Out[3]: array([0, 3, 4, 1, 2])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="surfgeopy.unique_rows">
+<span class="sig-prename descclassname"><span class="pre">surfgeopy.</span></span><span class="sig-name descname"><span class="pre">unique_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surfgeopy/remesh.html#unique_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surfgeopy.unique_rows" title="Permalink to this definition"></a></dt>
+<dd><p>Returns indices of unique rows. It will return the
+first occurrence of a row that is duplicated:
+[[1,2], [3,4], [1,2]] will return [0,1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>(</em><em>n</em><em>, </em><em>m</em><em>) </em><em>array</em>) – Floating point data</p></li>
+<li><p><strong>digits</strong> (<em>int</em><em> or </em><em>None</em>) – How many digits to consider</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>unique</strong> (<em>(j,) int</em>) – Index in data which is a unique row</p></li>
+<li><p><strong>inverse</strong> (<em>(n,) int</em>) – Array to reconstruct original
+Example: data[unique][inverse] == data</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="surfgeopy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gentian Zavalani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

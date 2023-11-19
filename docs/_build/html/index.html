@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>surfgeopy Documentation &mdash; surfgeopy 1.0.0-alpha documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="🛠️ Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            surfgeopy
+              <img src="_static/surfgeopy_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">🛠️ Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/sphere.html">Integral Computation Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#imports">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#spherical-harmonics">Spherical Harmonics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id1">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id2">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id3">Polynomial degree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id4">Result Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-torus">Gauss-Bonnet Theorem on Torus</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#imports">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#degree-of-polynomial">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-a-genus-2-surface">Gauss Bonnet theorem on a Genus 2 Surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id1">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id2">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id3">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id4">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-ellipsoid">Gauss Bonnet theorem on ellipsoid</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id5">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id6">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id7">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id8">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-the-first-dziuks-surface">Gauss Bonnet theorem on the first Dziuk’s surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id9">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id10">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id11">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id12">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-bioconcave-surface">Gauss Bonnet theorem on Bioconcave surface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id13">Error Evaluation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id14">Degree of Polynomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id15">Result Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">surfgeopy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">surfgeopy Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="surfgeopy-documentation">
+<h1>surfgeopy Documentation<a class="headerlink" href="#surfgeopy-documentation" title="Permalink to this heading"></a></h1>
+<p>Welcome to the documentation for surfgeopy, a Python package for calculating surface integrals over smooth embedded manifolds.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> is an open-source Python package designed for approximating surface integrals over smooth embedded manifolds. It employs curved surface triangulations through k-th order interpolation of the closest point projection. This extends initial linear surface approximations.</p>
+</section>
+<section id="square-squeezing-technique">
+<h2>Square-Squeezing Technique<a class="headerlink" href="#square-squeezing-technique" title="Permalink to this heading"></a></h2>
+<p>The key innovation in <code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> lies in the parametrization of triangles <span class="math notranslate nohighlight">\(T_i\)</span> over squares using a square-squeezing technique. This transformative approach reconfigures interpolation tasks of triangulated manifolds to the standard hypercube through a recently introduced cube-to-simplex transformation. This innovative process enhances the accuracy of surface approximations, making <code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> a powerful tool for high-fidelity calculations.</p>
+</section>
+<section id="chebyshev-lobatto-grids">
+<h2>Chebyshev-Lobatto Grids<a class="headerlink" href="#chebyshev-lobatto-grids" title="Permalink to this heading"></a></h2>
+<p>To guarantee stability and accuracy in computations, <code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> leverages classic Chebyshev-Lobatto grids. These grids enable the calculation of high-order interpolants for surface geometry while avoiding Runge’s phenomenon, a common issue in numerical analysis.</p>
+</section>
+<section id="surface-approximation-using-polynomial-interpolation">
+<h2>Surface Approximation Using Polynomial Interpolation<a class="headerlink" href="#surface-approximation-using-polynomial-interpolation" title="Permalink to this heading"></a></h2>
+<p>Consider an element <span class="math notranslate nohighlight">\(T_i\)</span> in a reference surface <span class="math notranslate nohighlight">\(S_h\)</span>. We consider the affine transformation and closest point projection:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tau_i : \Delta_2 \rightarrow T_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_i : T_i \rightarrow S\)</span></p></li>
+</ul>
+<p>Setting</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\varphi_i : \Omega \rightarrow S, \quad \varphi_i = \pi_i \circ \tau_i \circ \sigma\)</span>
+where <span class="math notranslate nohighlight">\(\sigma\)</span> is a mapping from the reference triangle <span class="math notranslate nohighlight">\(\Delta_2\)</span> to the physical triangle <span class="math notranslate nohighlight">\(T_i\)</span>.</p></li>
+</ul>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(q_i(\mathrm{x}) = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha}(\mathrm{x})\)</span>
+be an <span class="math notranslate nohighlight">\(n\)</span>-th order polynomial (Newton) interpolation of the mapping <span class="math notranslate nohighlight">\(\varphi_i\)</span> on <span class="math notranslate nohighlight">\(\Omega\)</span>.</p></li>
+</ul>
+<p>Then,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T_n = \{q_i, \Omega, q_i(\Omega)\}_{i=1,\dots,N}\)</span>
+is an <span class="math notranslate nohighlight">\(n\)</span>-th order approximation of the smooth surface <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/approximation_frame.jpg"><img alt="Surface Approximation" src="_images/approximation_frame.jpg" style="width: 4000px;" /></a>
+</figure>
+</section>
+</section>
+<section id="square-triangle-transformation">
+<h1>Square-Triangle Transformation<a class="headerlink" href="#square-triangle-transformation" title="Permalink to this heading"></a></h1>
+<p>Square-triangle transformations: Deformations of an equidistant grid (left picture) under Duffy’s transformation (middle picture) and square-squeezing (right picture)</p>
+<a class="reference internal image-reference" href="_images/square_equi.png"><img alt="drawing" src="_images/square_equi.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="_images/dufyy_equi.png"><img alt="Duffy's Transformation" src="_images/dufyy_equi.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="_images/ss_equi.png"><img alt="Square-Squeezing" src="_images/ss_equi.png" style="width: 200px;" /></a>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-right" title="🛠️ Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gentian Zavalani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

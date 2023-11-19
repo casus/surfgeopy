@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "surfgeopy"
-version = "0.0.1"
+version = "1.0.0-alpha"
 authors = [
   { name="Gentian Zavalani", email="g.zavalani@hzdr.de" },
 ]
@@ -24,4 +24,4 @@ classifiers = [
 "Bug Tracker" = "https://codebase.helmholtz.cloud/interpol/surfgeopy/issues"
 
 [tool.setuptools_scm]
-write_to = "src/surfgeopy/version.py"
+write_to = "surfgeopy/version.py"
