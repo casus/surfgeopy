@@ -48,20 +48,17 @@ def integration(
 
     # Case 1: User specifies deg_integration, and quadrature_rule 
     if deg_integration > 0 and quadrature_rule=='Gauss_Legendre':
-        print('true1')
         pnts, ws, offset = compute_surf_quadrature(
             ls_function, ls_grad_func, vertices, faces,
             interp_deg, lp_dgr, Refinement, fun_handle, deg_integration, quadrature_rule
         )
     # Case 2: User specifies deg_integration and quadrature_rule is default
     elif deg_integration > 0 and quadrature_rule is None:
-        print('true2')
         pnts, ws, offset = compute_surf_quadrature(
             ls_function, ls_grad_func, vertices, faces,
             interp_deg, lp_dgr, Refinement, fun_handle, deg_integration, quadrature_rule='Pull_back_Gauss'
         )
     else:
-        print('true3')
         # Default case: Use default configuration if no conditions are met
         pnts, ws, offset = compute_surf_quadrature(
             ls_function, ls_grad_func, vertices, faces, interp_deg, lp_dgr, Refinement, fun_handle
