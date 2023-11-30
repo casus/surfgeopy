@@ -144,9 +144,9 @@ below.
 
 ```bibtex
 @article{...,
-  title={HIGH-ORDER-INTEGRATION FOR REGULAR EMBEDDED MANIFOLDS},
+  title={High-order integration on regular triangulated manifolds reaches super-algebraic approximation rates through cubical re-parameterizations},
   author={Zavalani, G., Sander, O. and Hecht, M.},
-  journal={arXiv preprint arXiv:...},
+  journal={arXiv preprint arXiv:2311.13909},
   year={2023}
 }
 ```
