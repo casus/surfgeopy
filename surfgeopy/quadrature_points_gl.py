@@ -1,5 +1,5 @@
 import numpy as np
-from utils import *
+from .utils import *
 from numpy import linalg as LA
 
 __all__ = ['gauss_legendre_square', 'q_gauss_legendre']
