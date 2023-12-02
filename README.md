@@ -33,7 +33,7 @@ where $\sigma$ is a mapping from the reference square $\square_2$ to the the ref
 
 - We compute  $Q_{G_{2,k}} \varphi_i$ be the vector-valued tensor-polynomial interpolant of $\varphi_i$ in the Chebyshev--Lobbatto grid
 
-- $Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,n}}b_\alpha N_{\alpha}$
+- $Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,k}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,k}}b_\alpha N_{\alpha}$
   where the coefficients $b_\alpha \in \R$ of the Newton interpolation can be computed in closed form.
 
 
