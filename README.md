@@ -41,7 +41,7 @@ the integrand $f$ by Chebyshev--Lobatto interpolants
  $Q_{G_{2,k}} \varphi_i$, $Q_{G_{2,n}}(f \circ \varphi_i)$, respectively. We end up with the following closed form expression of 
 the integral can be computed precisely by high-order quadrature rules
 
- $\int_S fdS \approx\sum_{i=1}^K \int_{\square_d} Q_{G_{d,n}}(f\circ\varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{d,k}}\varphi_i(\mathrm{x}))^T DQ_{G_{d,k}}\varphi_i(\mathrm{x}))} d\mathrm{x}\approx \sum_{i=1}^K \sum_{\mathrm{p} \in P}\omega_{\mathrm{p}} Q_{G_{d,n}}(f \circ\varphi_i)(\mathrm{p})\sqrt{\det((DQ_{G_{d,k}}\varphi_i(\mathrm{p}))^T DQ_{G_{d,k}}\varphi_i(\mathrm{p}))}.$
+ $\int_S fdS \approx\sum_{i=1}^K \int_{\square_2} Q_{G_{d,n}}(f\circ\varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{x}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{x}))} d\mathrm{x}\approx \sum_{i=1}^K \sum_{\mathrm{p} \in P}\omega_{\mathrm{p}} Q_{G_{2,n}}(f \circ\varphi_i)(\mathrm{p})\sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{p}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{p}))}.$
 
 
 
