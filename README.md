@@ -19,6 +19,8 @@ To ensure the stability and accuracy of the computations, surfgeopy leverages cl
 
 ## Surface approximation using polynomial interpolation!
 
+<img src="images/approximation_frame.jpg" alt="drawing" width="4000"/>
+
 Consider an element $T_{i}$ in a reference surface $T$. We consider the affine transformation and closest point projection:
 
 - $\tau_i : \Delta_2 \rightarrow T_i$
@@ -27,16 +29,15 @@ Consider an element $T_{i}$ in a reference surface $T$. We consider the affine t
 Setting
 
 - $\varphi_i : \square_2 \rightarrow S_i, \quad \varphi_i = \pi_i \circ \tau_i\circ \sigma$
-where $\sigma$ is a mapping from the reference square $\square_w$ to the the reference triangle $\Delta_2$.
+where $\sigma$ is a mapping from the reference square $\square_2$ to the the reference triangle $\Delta_2$.
 
--We compute  $Q_{G_{2,k}} \varphi_i$ be the vector-valued tensor-polynomial interpolant of $\varphi_i$ in the Chebyshev--Lobbatto grid $\Cheb_{2,k}$
+- We compute  $Q_{G_{2,k}} \varphi_i$ be the vector-valued tensor-polynomial interpolant of $\varphi_i$ in the Chebyshev--Lobbatto grid
 
--$Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,n}}b_\alpha N_{\alpha}$
-where the coefficients $b_\alpha \in \R$ of the Newton interpolation can be computed in closed form.
+- $Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,n}}b_\alpha N_{\alpha}$
+  where the coefficients $b_\alpha \in \R$ of the Newton interpolation can be computed in closed form.
 
 
 
-<img src="images/approximation_frame.jpg" alt="drawing" width="4000"/>
 
 
 
