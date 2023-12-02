@@ -19,25 +19,21 @@ To ensure the stability and accuracy of the computations, surfgeopy leverages cl
 
 ## Surface approximation using polynomial interpolation!
 
-Consider an element $T_{i}$ in a reference surface $S_h$. We consider the affine transformation and closest point projection:
+Consider an element $T_{i}$ in a reference surface $T$. We consider the affine transformation and closest point projection:
 
 - $\tau_i : \Delta_2 \rightarrow T_i$
-- $\pi_i : T_i \rightarrow S$
+- $\pi_i : T_i \rightarrow S_i$
 
 Setting
 
-- $\varphi_i : \Omega \rightarrow S, \quad \varphi_i = \pi_i \circ \tau_i\circ \sigma$
-where $\sigma$ is a mapping from the reference triangle $\Delta_2$ to the physical triangle $T_i$.
+- $\varphi_i : \square_2 \rightarrow S_i, \quad \varphi_i = \pi_i \circ \tau_i\circ \sigma$
+where $\sigma$ is a mapping from the reference square $\square_w$ to the the reference triangle $\Delta_2$.
 
-Let
+-We compute  $Q_{G_{2,k}} \varphi_i$ be the vector-valued tensor-polynomial interpolant of $\varphi_i$ in the Chebyshev--Lobbatto grid $\Cheb_{2,k}$
 
-- $q_i(\mathrm{x})= \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha}(\mathrm{x})$
-be an $n^{\text{th}}$-order polynomial (Newton) interpolation of the mapping $\varphi_i$ on $\Omega$.
+-$Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,n}}b_\alpha N_{\alpha}$
+where the coefficients $b_\alpha \in \R$ of the Newton interpolation can be computed in closed form.
 
-Then,
-
-- $T_n = {q_i,\Omega,q_i(\Omega)}_{i=1,\dots,N}$
-is an $n^{\text{th}}$ order approximation of the smooth surface $S$.
 
 
 <img src="images/approximation_frame.jpg" alt="drawing" width="4000"/>
