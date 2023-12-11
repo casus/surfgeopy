@@ -1,6 +1,6 @@
-==================================
-Integral Computation Benchmark
-==================================
+=============================================
+Surface Area Computation Benchmark for Sphere
+=============================================
 
 Area of the Sphere with Pull-back Gauss Quadrature on Simplex
 --------------------------------------------------------------
@@ -92,8 +92,8 @@ Result Visualization
 .. code-block:: python
 
    plt.semilogy(Nrange, error1, '-or')
-   plt.xlabel("Degree of Polynomial", fontsize=13)
-   plt.ylabel("Relative Error", fontsize=13)
+   plt.xlabel("Polynomial degree", fontsize=13)
+   plt.ylabel("Relative error", fontsize=13)
    plt.xticks(np.arange(min(Nrange), max(Nrange) + 1, 1.0))
    plt.ylim([2.758195177427762e-18, 3.9514540203871754e-04])
    plt.grid()
@@ -175,7 +175,7 @@ Polynomial degree
 
    Nrange = list(range(2, 18))
    lp_degree = float("inf")
-   refinement = 0
+   refinement = 1
    #By default, the integration degree is set to 14.
    integ_degree=25
    error1 = []

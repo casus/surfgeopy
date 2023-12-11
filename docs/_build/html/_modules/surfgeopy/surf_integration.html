@@ -43,20 +43,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">🛠️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/sphere.html">Integral Computation Benchmark</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
@@ -73,6 +59,14 @@
 <li class="toctree-l4"><a class="reference internal" href="../../examples/sphere.html#id4">Result Visualization</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/torus.html">Surface Area Computation Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/torus.html#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/torus.html#local-imports">Local imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/torus.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/torus.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/torus.html#result-visualization">Result Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
@@ -111,6 +105,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../examples/gauss_bonnet.html#id15">Result Visualization</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -189,23 +197,19 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">read_mesh_data</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-
     <span class="c1"># Case 1: User specifies deg_integration, and quadrature_rule </span>
     <span class="k">if</span> <span class="n">deg_integration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">quadrature_rule</span><span class="o">==</span><span class="s1">&#39;Gauss_Legendre&#39;</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;true1&#39;</span><span class="p">)</span>
         <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
             <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span>
             <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span>
         <span class="p">)</span>
     <span class="c1"># Case 2: User specifies deg_integration and quadrature_rule is default</span>
     <span class="k">elif</span> <span class="n">deg_integration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">quadrature_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;true2&#39;</span><span class="p">)</span>
         <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
             <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span>
             <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="o">=</span><span class="s1">&#39;Pull_back_Gauss&#39;</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;true3&#39;</span><span class="p">)</span>
         <span class="c1"># Default case: Use default configuration if no conditions are met</span>
         <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
             <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span>

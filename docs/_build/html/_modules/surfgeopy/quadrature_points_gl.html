@@ -43,20 +43,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">🛠️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/sphere.html">Integral Computation Benchmark</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
@@ -115,6 +101,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -143,7 +143,7 @@
              
   <h1>Source code for surfgeopy.quadrature_points_gl</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">LA</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gauss_legendre_square&#39;</span><span class="p">,</span> <span class="s1">&#39;q_gauss_legendre&#39;</span><span class="p">]</span>

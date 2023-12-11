@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Integral Computation Benchmark &mdash; surfgeopy 1.0.0-alpha documentation</title>
+  <title>Surface Area Computation Benchmark for Sphere &mdash; surfgeopy 1.0.0-alpha documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Surface Integrals Benchmark" href="gauss_bonnet.html" />
+    <link rel="next" title="Surface Area Computation Benchmark for Torus" href="torus.html" />
     <link rel="prev" title="Examples" href="../examples.html" /> 
 </head>
 
@@ -47,22 +47,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">🛠️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Integral Computation Benchmark</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Surface Area Computation Benchmark for Sphere</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imports">Imports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#error-evaluation-function">Error Evaluation Function</a></li>
@@ -77,6 +63,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#id4">Result Visualization</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="torus.html">Surface Area Computation Benchmark for Torus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#local-imports">Local imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#result-visualization">Result Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
@@ -119,6 +113,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -136,7 +144,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../examples.html">Examples</a></li>
-      <li class="breadcrumb-item active">Integral Computation Benchmark</li>
+      <li class="breadcrumb-item active">Surface Area Computation Benchmark for Sphere</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/sphere.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -146,8 +154,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="integral-computation-benchmark">
-<h1>Integral Computation Benchmark<a class="headerlink" href="#integral-computation-benchmark" title="Permalink to this heading"></a></h1>
+  <section id="surface-area-computation-benchmark-for-sphere">
+<h1>Surface Area Computation Benchmark for Sphere<a class="headerlink" href="#surface-area-computation-benchmark-for-sphere" title="Permalink to this heading"></a></h1>
 <section id="area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">
 <h2>Area of the Sphere with Pull-back Gauss Quadrature on Simplex<a class="headerlink" href="#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex" title="Permalink to this heading"></a></h2>
 <p>This benchmark focuses on the computational task of computing surface areas for the standard sphere <span class="math notranslate nohighlight">\(S^2\)</span>. We utilize the <cite>distmesh</cite> library to generate Delaunay triangulations with <span class="math notranslate nohighlight">\(N_{\Delta}=1652\)</span> triangles for the sphere. <code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> offers two options for computing surface integrals:</p>
@@ -226,8 +234,8 @@
 <section id="result-visualization">
 <h3>Result Visualization<a class="headerlink" href="#result-visualization" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">error1</span><span class="p">,</span> <span class="s1">&#39;-or&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Degree of Polynomial&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Relative Error&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Polynomial degree&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Relative error&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">Nrange</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">Nrange</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">2.758195177427762e-18</span><span class="p">,</span> <span class="mf">3.9514540203871754e-04</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
@@ -290,7 +298,7 @@
 <h3>Polynomial degree<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Nrange</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
 <span class="n">lp_degree</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-<span class="n">refinement</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">refinement</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1">#By default, the integration degree is set to 14.</span>
 <span class="n">integ_degree</span><span class="o">=</span><span class="mi">25</span>
 <span class="n">error1</span> <span class="o">=</span> <span class="p">[]</span>
@@ -322,7 +330,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gauss_bonnet.html" class="btn btn-neutral float-right" title="Surface Integrals Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="torus.html" class="btn btn-neutral float-right" title="Surface Area Computation Benchmark for Torus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

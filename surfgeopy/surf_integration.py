@@ -45,7 +45,6 @@ def integration(
     """
     vertices, faces = read_mesh_data(mesh)
 
-
     # Case 1: User specifies deg_integration, and quadrature_rule 
     if deg_integration > 0 and quadrature_rule=='Gauss_Legendre':
         pnts, ws, offset = compute_surf_quadrature(

@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="surfgeopy package" href="surfgeopy.html" />
-    <link rel="prev" title="🛠️ Installation" href="install.html" /> 
+    <link rel="prev" title="Surface Integrals Benchmark" href="examples/gauss_bonnet.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,20 +46,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">🛠️ Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/sphere.html">Integral Computation Benchmark</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
@@ -76,6 +62,14 @@
 <li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#id4">Result Visualization</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/torus.html">Surface Area Computation Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#local-imports">Local imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#result-visualization">Result Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="examples/gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
@@ -114,6 +108,20 @@
 <li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#id15">Result Visualization</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -167,7 +175,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="install.html" class="btn btn-neutral float-left" title="🛠️ Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples/gauss_bonnet.html" class="btn btn-neutral float-left" title="Surface Integrals Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="surfgeopy.html" class="btn btn-neutral float-right" title="surfgeopy package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

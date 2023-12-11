@@ -1,5 +1,6 @@
-Surface Integrals Benchmark
-===========================
+=======================================================
+Surface Integrals Benchmark using Gauss-Bonnet Theorem
+=======================================================
 
 Overview
 --------
@@ -140,7 +141,7 @@ Imports
     # Local imports
     import surfgeopy as sp
 
-    mesh_path = "../meshes/genus_N=15632.mat"
+    mesh_path = "../meshes/genus_two_N=15632.mat"
 
     def phi(x: np.ndarray):
         return 2*x[1]*(x[1]*x[1] - 3*x[0]*x[0])*(1 - x[2]*x[2]) + (x[0]*x[0] + x[1]*x[1])**2 - (9*x[2]*x[2] - 1)*(1 - x[2]*x[2])
@@ -234,10 +235,10 @@ Imports
    # Local imports
    import surfgeopy as sp
 
-   mesh_path = "../meshes/ellipsoid_a=1_b=08_0.6_248.mat"
-   a = 1
-   b = 0.8
-   c = 0.6
+   mesh_path ="../meshes/ellipsoid_N=4024_a=0.6_b=0.8_c=2.mat"
+   a=0.6
+   b=0.8
+   c=2.0
 
    def phi(x: np.ndarray):
        return (x[0]**2/a**2 + x[1]**2/b**2 + x[2]**2/c**2) - 1
@@ -424,7 +425,7 @@ The Euler Characteristic is :math:`\chi(\mathcal{M})=2`, therefore we have:
     # Local imports
     import surfgeopy as sp
 
-    mesh_path = "../meshes/vogitMesh_N=5980.mat"
+    mesh_path ="../meshes/bioconcave_N=5980.mat"
 
     d = 0.80
     c = -0.9344

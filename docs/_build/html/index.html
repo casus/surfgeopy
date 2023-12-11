@@ -46,22 +46,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">🛠️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/sphere.html">Integral Computation Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/sphere.html">Surface Area Computation Benchmark for Sphere</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="examples/sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#imports">Imports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="examples/sphere.html#error-evaluation-function">Error Evaluation Function</a></li>
@@ -78,7 +64,15 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="examples/gauss_bonnet.html">Surface Integrals Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/torus.html">Surface Area Computation Benchmark for Torus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#local-imports">Local imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/torus.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/gauss_bonnet.html">Surface Integrals Benchmark using Gauss-Bonnet Theorem</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples/gauss_bonnet.html#gauss-bonnet-theorem-on-torus">Gauss-Bonnet Theorem on Torus</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="examples/gauss_bonnet.html#imports">Imports</a></li>
@@ -118,6 +112,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfgeopy.html#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -147,8 +155,6 @@
   <section id="surfgeopy-documentation">
 <h1>surfgeopy Documentation<a class="headerlink" href="#surfgeopy-documentation" title="Permalink to this heading"></a></h1>
 <p>Welcome to the documentation for surfgeopy, a Python package for calculating surface integrals over smooth embedded manifolds.</p>
-<div class="toctree-wrapper compound">
-</div>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> is an open-source Python package designed for approximating surface integrals over smooth embedded manifolds. It employs curved surface triangulations through k-th order interpolation of the closest point projection. This extends initial linear surface approximations.</p>
@@ -163,29 +169,20 @@
 </section>
 <section id="surface-approximation-using-polynomial-interpolation">
 <h2>Surface Approximation Using Polynomial Interpolation<a class="headerlink" href="#surface-approximation-using-polynomial-interpolation" title="Permalink to this heading"></a></h2>
-<p>Consider an element <span class="math notranslate nohighlight">\(T_i\)</span> in a reference surface <span class="math notranslate nohighlight">\(S_h\)</span>. We consider the affine transformation and closest point projection:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\tau_i : \Delta_2 \rightarrow T_i\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\pi_i : T_i \rightarrow S\)</span></p></li>
-</ul>
-<p>Setting</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\varphi_i : \Omega \rightarrow S, \quad \varphi_i = \pi_i \circ \tau_i \circ \sigma\)</span>
-where <span class="math notranslate nohighlight">\(\sigma\)</span> is a mapping from the reference triangle <span class="math notranslate nohighlight">\(\Delta_2\)</span> to the physical triangle <span class="math notranslate nohighlight">\(T_i\)</span>.</p></li>
-</ul>
-<p>Let</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(q_i(\mathrm{x}) = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha}(\mathrm{x})\)</span>
-be an <span class="math notranslate nohighlight">\(n\)</span>-th order polynomial (Newton) interpolation of the mapping <span class="math notranslate nohighlight">\(\varphi_i\)</span> on <span class="math notranslate nohighlight">\(\Omega\)</span>.</p></li>
-</ul>
-<p>Then,</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(T_n = \{q_i, \Omega, q_i(\Omega)\}_{i=1,\dots,N}\)</span>
-is an <span class="math notranslate nohighlight">\(n\)</span>-th order approximation of the smooth surface <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
-</ul>
 <figure class="align-default">
 <a class="reference internal image-reference" href="_images/approximation_frame.jpg"><img alt="Surface Approximation" src="_images/approximation_frame.jpg" style="width: 4000px;" /></a>
 </figure>
+<p>Consider an element <span class="math notranslate nohighlight">\(T_i\)</span> on a reference surface <span class="math notranslate nohighlight">\(T\)</span>. The core functionality of our <code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code> revolves around:</p>
+<ul class="simple">
+<li><p>Define <span class="math notranslate nohighlight">\(\tau_i : \Delta_2 \rightarrow T_i\)</span> and <span class="math notranslate nohighlight">\(\pi_i : T_i \rightarrow S_i\)</span>.</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(\varphi_i : \square_2 \rightarrow S_i\)</span> as <span class="math notranslate nohighlight">\(\varphi_i = \pi_i \circ \tau_i \circ \sigma\)</span> where <span class="math notranslate nohighlight">\(\sigma\)</span> is a mapping from the reference square <span class="math notranslate nohighlight">\(\square_2\)</span> to the reference triangle <span class="math notranslate nohighlight">\(\Delta_2\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(Q_{G_{2,k}} \varphi_i\)</span> as the vector-valued tensor-polynomial interpolant of <span class="math notranslate nohighlight">\(\varphi_i\)</span> on the Chebyshev–Lobbatto grid.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Q_{G_{2,k}} \varphi_i=\sum_{\alpha \in A_{2,k}} b_\alpha N_{\alpha}\)</span> where the coefficients <span class="math notranslate nohighlight">\(b_\alpha \in R\)</span> of the Newton interpolation can be computed in closed form.</p></li>
+</ul>
+<p>By substituting the surface geometry <span class="math notranslate nohighlight">\(\varphi_i\)</span> and the integrand <span class="math notranslate nohighlight">\(f\)</span> with Chebyshev–Lobatto interpolants <span class="math notranslate nohighlight">\(Q_{G_{2,k}} \varphi_i\)</span> and <span class="math notranslate nohighlight">\(Q_{G_{2,n}}(f \circ \varphi_i)\)</span> respectively, a closed-form expression for the integral is obtained. This expression can be accurately computed using high-order quadrature rules.</p>
+<p>The integral <span class="math notranslate nohighlight">\(\int_S fdS\)</span> is approximated as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\sum_{i=1}^K \int_{\square_2} Q_{G_{d,n}}(f \circ \varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{x}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{x}))} d\mathrm{x}\\\approx \sum_{i=1}^K \sum_{\mathrm{p} \in P} \omega_{\mathrm{p}} Q_{G_{2,n}}(f \circ \varphi_i)(\mathrm{p}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{p}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{p}))}.\end{aligned}\end{align} \]</div>
 </section>
 </section>
 <section id="square-triangle-transformation">
@@ -194,6 +191,15 @@ is an <span class="math notranslate nohighlight">\(n\)</span>-th order approxima
 <a class="reference internal image-reference" href="_images/square_equi.png"><img alt="drawing" src="_images/square_equi.png" style="width: 200px;" /></a>
 <a class="reference internal image-reference" href="_images/dufyy_equi.png"><img alt="Duffy's Transformation" src="_images/dufyy_equi.png" style="width: 200px;" /></a>
 <a class="reference internal image-reference" href="_images/ss_equi.png"><img alt="Square-Squeezing" src="_images/ss_equi.png" style="width: 200px;" /></a>
+<p>For details on High-order integration on regular triangulated manifolds through cubical re-parameterizations at the heart of
+<code class="docutils literal notranslate"><span class="pre">surfgeopy</span></code>, please consult:</p>
+<blockquote>
+<div><ol class="upperalpha simple" start="7">
+<li><p>Zavalani, O. Sander and M. Hecht: High-order integration on regular triangulated manifolds reaches super-algebraic approximation rates through cubical re-parameterizations <a class="reference external" href="https://arxiv.org/abs/2311.13909">[arXiv]</a></p></li>
+</ol>
+</div></blockquote>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
 

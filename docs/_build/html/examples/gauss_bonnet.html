@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Surface Integrals Benchmark &mdash; surfgeopy 1.0.0-alpha documentation</title>
+  <title>Surface Integrals Benchmark using Gauss-Bonnet Theorem &mdash; surfgeopy 1.0.0-alpha documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -21,7 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Integral Computation Benchmark" href="sphere.html" /> 
+    <link rel="next" title="surfgeopy" href="../modules.html" />
+    <link rel="prev" title="Surface Area Computation Benchmark for Torus" href="torus.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,22 +47,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">🛠️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">surfgeopy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../surfgeopy.html">surfgeopy package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sphere.html">Integral Computation Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sphere.html">Surface Area Computation Benchmark for Sphere</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="sphere.html#area-of-the-sphere-with-pull-back-gauss-quadrature-on-simplex">Area of the Sphere with Pull-back Gauss Quadrature on Simplex</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="sphere.html#imports">Imports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sphere.html#error-evaluation-function">Error Evaluation Function</a></li>
@@ -78,7 +65,15 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Surface Integrals Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="torus.html">Surface Area Computation Benchmark for Torus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#local-imports">Local imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#error-evaluation-function">Error Evaluation Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#polynomial-degree">Polynomial degree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torus.html#result-visualization">Result Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Surface Integrals Benchmark using Gauss-Bonnet Theorem</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gauss-bonnet-theorem-on-torus">Gauss-Bonnet Theorem on Torus</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imports">Imports</a></li>
@@ -118,6 +113,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">surfgeopy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../surfgeopy.html">surfgeopy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surfgeopy.html#module-surfgeopy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -135,7 +144,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../examples.html">Examples</a></li>
-      <li class="breadcrumb-item active">Surface Integrals Benchmark</li>
+      <li class="breadcrumb-item active">Surface Integrals Benchmark using Gauss-Bonnet Theorem</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/gauss_bonnet.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -145,8 +154,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="surface-integrals-benchmark">
-<h1>Surface Integrals Benchmark<a class="headerlink" href="#surface-integrals-benchmark" title="Permalink to this heading"></a></h1>
+  <section id="surface-integrals-benchmark-using-gauss-bonnet-theorem">
+<h1>Surface Integrals Benchmark using Gauss-Bonnet Theorem<a class="headerlink" href="#surface-integrals-benchmark-using-gauss-bonnet-theorem" title="Permalink to this heading"></a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>This document outlines a comprehensive benchmark for the computation of surface integrals utilizing the high-order surface quadrature (HOSQ) method, specifically tailored for algebraic varieties.</p>
@@ -253,7 +262,7 @@
 <span class="c1"># Local imports</span>
 <span class="kn">import</span> <span class="nn">surfgeopy</span> <span class="k">as</span> <span class="nn">sp</span>
 
-<span class="n">mesh_path</span> <span class="o">=</span> <span class="s2">&quot;../meshes/genus_N=15632.mat&quot;</span>
+<span class="n">mesh_path</span> <span class="o">=</span> <span class="s2">&quot;../meshes/genus_two_N=15632.mat&quot;</span>
 
 <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="mi">9</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -335,10 +344,10 @@
 <span class="c1"># Local imports</span>
 <span class="kn">import</span> <span class="nn">surfgeopy</span> <span class="k">as</span> <span class="nn">sp</span>
 
-<span class="n">mesh_path</span> <span class="o">=</span> <span class="s2">&quot;../meshes/ellipsoid_a=1_b=08_0.6_248.mat&quot;</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">b</span> <span class="o">=</span> <span class="mf">0.8</span>
-<span class="n">c</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">mesh_path</span> <span class="o">=</span><span class="s2">&quot;../meshes/ellipsoid_N=4024_a=0.6_b=0.8_c=2.mat&quot;</span>
+<span class="n">a</span><span class="o">=</span><span class="mf">0.6</span>
+<span class="n">b</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="n">c</span><span class="o">=</span><span class="mf">2.0</span>
 
 <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -492,7 +501,7 @@
 <span class="c1"># Local imports</span>
 <span class="kn">import</span> <span class="nn">surfgeopy</span> <span class="k">as</span> <span class="nn">sp</span>
 
-<span class="n">mesh_path</span> <span class="o">=</span> <span class="s2">&quot;../meshes/vogitMesh_N=5980.mat&quot;</span>
+<span class="n">mesh_path</span> <span class="o">=</span><span class="s2">&quot;../meshes/bioconcave_N=5980.mat&quot;</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="mf">0.80</span>
 <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.9344</span>
@@ -591,7 +600,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sphere.html" class="btn btn-neutral float-left" title="Integral Computation Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="torus.html" class="btn btn-neutral float-left" title="Surface Area Computation Benchmark for Torus" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules.html" class="btn btn-neutral float-right" title="surfgeopy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

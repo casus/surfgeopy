@@ -3,14 +3,6 @@ surfgeopy Documentation
 
 Welcome to the documentation for surfgeopy, a Python package for calculating surface integrals over smooth embedded manifolds.
 
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-
-   install
-   modules
-   examples
-
 Introduction
 ------------
 
@@ -30,29 +22,29 @@ To guarantee stability and accuracy in computations, ``surfgeopy`` leverages cla
 Surface Approximation Using Polynomial Interpolation
 -----------------------------------------------------
 
-Consider an element :math:`T_i` in a reference surface :math:`S_h`. We consider the affine transformation and closest point projection:
-
-- :math:`\tau_i : \Delta_2 \rightarrow T_i`
-- :math:`\pi_i : T_i \rightarrow S`
-
-Setting
-
-- :math:`\varphi_i : \Omega \rightarrow S, \quad \varphi_i = \pi_i \circ \tau_i \circ \sigma`
-  where :math:`\sigma` is a mapping from the reference triangle :math:`\Delta_2` to the physical triangle :math:`T_i`.
-
-Let
-
-- :math:`q_i(\mathrm{x}) = \sum_{\alpha \in A_{2,n}} \varphi_i(p_\alpha)L_{\alpha}(\mathrm{x})`
-  be an :math:`n`-th order polynomial (Newton) interpolation of the mapping :math:`\varphi_i` on :math:`\Omega`.
-
-Then,
-
-- :math:`T_n = \{q_i, \Omega, q_i(\Omega)\}_{i=1,\dots,N}`
-  is an :math:`n`-th order approximation of the smooth surface :math:`S`.
-
 .. figure:: images/approximation_frame.jpg
    :alt: Surface Approximation
    :width: 4000
+
+Consider an element :math:`T_i` on a reference surface :math:`T`. The core functionality of our ``surfgeopy`` revolves around:
+
+- Define :math:`\tau_i : \Delta_2 \rightarrow T_i` and :math:`\pi_i : T_i \rightarrow S_i`.
+- Set :math:`\varphi_i : \square_2 \rightarrow S_i` as :math:`\varphi_i = \pi_i \circ \tau_i \circ \sigma` where :math:`\sigma` is a mapping from the reference square :math:`\square_2` to the reference triangle :math:`\Delta_2`.
+
+- Compute :math:`Q_{G_{2,k}} \varphi_i` as the vector-valued tensor-polynomial interpolant of :math:`\varphi_i` on the Chebyshev–Lobbatto grid.
+
+- :math:`Q_{G_{2,k}} \varphi_i=\sum_{\alpha \in A_{2,k}} b_\alpha N_{\alpha}` where the coefficients :math:`b_\alpha \in R` of the Newton interpolation can be computed in closed form.
+
+By substituting the surface geometry :math:`\varphi_i` and the integrand :math:`f` with Chebyshev–Lobatto interpolants :math:`Q_{G_{2,k}} \varphi_i` and :math:`Q_{G_{2,n}}(f \circ \varphi_i)` respectively, a closed-form expression for the integral is obtained. This expression can be accurately computed using high-order quadrature rules.
+
+The integral :math:`\int_S fdS` is approximated as follows:
+
+.. math::
+   \sum_{i=1}^K \int_{\square_2} Q_{G_{d,n}}(f \circ \varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{x}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{x}))} d\mathrm{x} 
+
+   \approx \sum_{i=1}^K \sum_{\mathrm{p} \in P} \omega_{\mathrm{p}} Q_{G_{2,n}}(f \circ \varphi_i)(\mathrm{p}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{p}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{p}))}.
+
+
 
 
 Square-Triangle Transformation
@@ -73,6 +65,20 @@ Square-triangle transformations: Deformations of an equidistant grid (left pictu
 .. image:: images/ss_equi.png
    :alt: Square-Squeezing
    :width: 200
+
+For details on High-order integration on regular triangulated manifolds through cubical re-parameterizations at the heart of
+``surfgeopy``, please consult:
+
+   G. Zavalani, O. Sander and M. Hecht: High-order integration on regular triangulated manifolds reaches super-algebraic approximation rates through cubical re-parameterizations `[arXiv] <https://arxiv.org/abs/2311.13909>`_
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   install
+   examples
+   modules
+
 
    
 
