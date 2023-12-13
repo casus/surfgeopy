@@ -35,14 +35,14 @@ Consider an element :math:`T_i` on a reference surface :math:`T`. The core funct
 
 - :math:`Q_{G_{2,k}} \varphi_i=\sum_{\alpha \in A_{2,k}} b_\alpha N_{\alpha}` where the coefficients :math:`b_\alpha \in R` of the Newton interpolation can be computed in closed form.
 
-By substituting the surface geometry :math:`\varphi_i` and the integrand :math:`f` with Chebyshev–Lobatto interpolants :math:`Q_{G_{2,k}} \varphi_i` and :math:`Q_{G_{2,n}}(f \circ \varphi_i)` respectively, a closed-form expression for the integral is obtained. This expression can be accurately computed using high-order quadrature rules.
+By substituting the surface geometry :math:`\varphi_i` with Chebyshev–Lobatto interpolants :math:`Q_{G_{2,k}} \varphi_i`, a closed-form expression for the integral is obtained. This expression can be accurately computed using high-order quadrature rules.
 
 The integral :math:`\int_S fdS` is approximated as follows:
 
 .. math::
-   \sum_{i=1}^K \int_{\square_2} Q_{G_{d,n}}(f \circ \varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{x}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{x}))} d\mathrm{x} 
+   \sum_{i=1}^K \int_{\square_2} (f \circ \varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{x}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{x}))} d\mathrm{x} 
 
-   \approx \sum_{i=1}^K \sum_{\mathrm{p} \in P} \omega_{\mathrm{p}} Q_{G_{2,n}}(f \circ \varphi_i)(\mathrm{p}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{p}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{p}))}.
+   \approx \sum_{i=1}^K \sum_{\mathrm{p} \in P} \omega_{\mathrm{p}} (f \circ \varphi_i)(\mathrm{p}) \sqrt{\det((DQ_{G_{2,k}} \varphi_i(\mathrm{p}))^T DQ_{G_{2,k}} \varphi_i(\mathrm{p}))}.
 
 
 

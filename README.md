@@ -36,7 +36,7 @@ where $\sigma$ is a mapping from the reference square $\square_2$ to the the ref
 - $Q_{G_{2,k}} \varphi_i = \sum_{\alpha \in A_{2,k}} \varphi_i(p_\alpha)L_{\alpha} = \sum_{\alpha \in A_{2,k}}b_\alpha N_{\alpha}$
   where the coefficients $b_\alpha \in \R$ of the Newton interpolation can be computed in closed form.
 
-Substituting the surface geometry $\varphi_i$ with Chebyshev–Lobatto interpolants $Q_{G_{2,k}} \varphi_i$ a, yields a closed-form expression for the integral. This expression can be accurately computed using high-order quadrature rules.
+Substituting the surface geometry $\varphi_i$ with Chebyshev–Lobatto interpolants $Q_{G_{2,k}} \varphi_i$, yields a closed-form expression for the integral. This expression can be accurately computed using high-order quadrature rules.
 
  $\int_S fdS \approx\sum_{i=1}^K \int_{\square_2} (f\circ\varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{x}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{x}))} d\mathrm{x}\approx \sum_{i=1}^K \sum_{\mathrm{p} \in P}\omega_{\mathrm{p}} (f \circ\varphi_i)(\mathrm{p})\sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{p}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{p}))}.$
 

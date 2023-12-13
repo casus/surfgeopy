@@ -129,8 +129,9 @@ def compute_surf_quadrature(ls_function, ls_grad_func, vertices, faces, interp_d
 
             # Generate quadrature points
             if Refinement > 0:
-                index = quadrature_split_surf_tri(pnts_tri, np.array([[0, 1, 2]]), ls_function, ls_grad_func,
-                                                  interp_deg, lp_dgr, Refinement, fun_handle,deg_integration,quadrature_rule, pnts, ws, index)
+                
+                index = quadrature_split_surf_tri(ls_function, ls_grad_func, pnts_tri, np.array([[0, 1, 2]]), interp_deg,
+                              lp_dgr,Refinement, fun_handle, deg_integration, quadrature_rule, pnts, ws, index)
             else:
                 index = quadrature_surf_tri(ls_function, ls_grad_func,
                                             pnts_tri, np.array([[0, 1, 2]]), interp_deg, lp_dgr, fun_handle,deg_integration,quadrature_rule, pnts, ws, index)
@@ -266,7 +267,7 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
 
 
 def quadrature_split_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
-                              lp_dgr, fun_handle, deg_integration, quadrature_rule, pnts, ws, index):
+                              lp_dgr, Refinement,fun_handle, deg_integration, quadrature_rule, pnts, ws, index):
     """
     For a mixed mesh, find the cell integration of the test function f.
 
