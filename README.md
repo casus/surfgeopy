@@ -135,8 +135,6 @@ pytest [-vvv]
 
 Contributions to the `surfgeopy` packages are highly welcome.
 We recommend you have a look at the [CONTRIBUTING.md](./CONTRIBUTING.md) first.
-For a more comprehensive contribution guide visit
-the [Contributors section](link-to-developer-section) of the documentation.
 
 
 ## Credits and contributors
