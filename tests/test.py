@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from surfgeopy import pullback, subdivide, pushforward, quadrule_on_simplex, integration
+from surfgeopy import pullback, subdivide, pushforward, quadrule_on_simplex,SimpleImplicitSurfaceProjection, integration
 
 class TestSurfgeopyFunctions:
 
@@ -77,7 +77,14 @@ class TestSurfgeopyFunctions:
     def test_quadrule_on_simplex(self, deg, expected_num_weights):
         weights, _ = quadrule_on_simplex(deg)
         assert len(weights) == expected_num_weights
-
+    def test_closest_point(self):
+        zero_levelset_function = lambda x: x[0]**2 + x[1]**2 + x[2]**2 - 1
+        gradient_function = lambda x: np.array([2*x[0], 2*x[1], 2*x[2]])
+        x0 = np.array([0.5, 0.5, 0.5])
+        pnts_p = SimpleImplicitSurfaceProjection(zero_levelset_function, gradient_function, x0)
+        assert np.abs(zero_levelset_function(pnts_p)<1e-16)
+        
+        
     def test_integration_pull_back_gauss(self):
         # Define the test case for integration using pull-back Gauss quadrature
         zero_levelset_function = lambda x: x[0]**2 + x[1]**2 + x[2]**2 - 1
