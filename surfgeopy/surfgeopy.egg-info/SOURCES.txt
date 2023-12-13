@@ -2,6 +2,7 @@
 LICENSE
 README.md
 pyproject.toml
+readthedocs.yaml
 setup.cfg
 setup.py
 docs/.DS_Store
@@ -13,6 +14,7 @@ docs/install.rst
 docs/make.bat
 docs/modules.rst
 docs/surfgeopy.rst
+docs/_build/.DS_Store
 docs/_build/doctrees/environment.pickle
 docs/_build/doctrees/examples.doctree
 docs/_build/doctrees/index.doctree
@@ -21,6 +23,7 @@ docs/_build/doctrees/modules.doctree
 docs/_build/doctrees/surfgeopy.doctree
 docs/_build/doctrees/examples/gauss_bonnet.doctree
 docs/_build/doctrees/examples/sphere.doctree
+docs/_build/doctrees/examples/torus.doctree
 docs/_build/html/.buildinfo
 docs/_build/html/examples.html
 docs/_build/html/genindex.html
@@ -61,6 +64,7 @@ docs/_build/html/_sources/modules.rst.txt
 docs/_build/html/_sources/surfgeopy.rst.txt
 docs/_build/html/_sources/examples/gauss_bonnet.rst.txt
 docs/_build/html/_sources/examples/sphere.rst.txt
+docs/_build/html/_sources/examples/torus.rst.txt
 docs/_build/html/_static/_sphinx_javascript_frameworks_compat.js
 docs/_build/html/_static/basic.css
 docs/_build/html/_static/custom.css
@@ -102,9 +106,11 @@ docs/_build/html/_static/js/html5shiv.min.js
 docs/_build/html/_static/js/theme.js
 docs/_build/html/examples/gauss_bonnet.html
 docs/_build/html/examples/sphere.html
+docs/_build/html/examples/torus.html
 docs/_static/custom.css
 docs/examples/gauss_bonnet.rst
 docs/examples/sphere.rst
+docs/examples/torus.rst
 docs/images/.DS_Store
 docs/images/G_bonnet_bioconcave_linf 2.png
 docs/images/G_bonnet_bioconcave_linf.png
@@ -125,28 +131,12 @@ docs/images/square_equi.png
 docs/images/ss_equi.png
 docs/images/surfgeopy_logo.png
 docs/images/torus_pict_R=0.5.png
-examples/0_Benchmark_ HOSQandGPLS_sphere.ipynb
-examples/1_Benchmark_ HOSQandGPLS_double_torus.ipynb
-examples/2_Benchmark_ HOSQandGPLS_ellipsoid.ipynb
-examples/3_Benchmark_ HOSQandGPLS_biconcavedisk.ipynb
-examples/4_Benchmark_ HOSQandGPLS_genus_2.ipynb
-examples/5_Benchmark_ HOSQandGPLS_torus.ipynb
-examples/6_Benchmark_ HOSQandGPLS_Dziuk’s surface.ipynb
-examples/GB_torus_geom_and_int_linf.pdf
 examples/Gauss_Bonnet_theorem_bench.ipynb
 examples/Test_integration_on_the_whole_sphere.ipynb
 examples/Test_integration_on_torus.ipynb
-examples/newvs_sphere_Y_5_4_geom_and_int_linf.pdf
-examples/.ipynb_checkpoints/0_Benchmark_ HOSQandGPLS_sphere-checkpoint.ipynb
-examples/.ipynb_checkpoints/1_Benchmark_ HOSQandGPLS_double_torus-checkpoint.ipynb
 examples/.ipynb_checkpoints/1_Benchmark_ HOSQandGPLS_genus_2-checkpoint.ipynb
 examples/.ipynb_checkpoints/1_Benchmark_ HOSQandGPLS_torus-checkpoint.ipynb
-examples/.ipynb_checkpoints/2_Benchmark_ HOSQandGPLS_ellipsoid-checkpoint.ipynb
 examples/.ipynb_checkpoints/3_Benchmark_ HOSQandGPLS_Dziuk’s surface-checkpoint.ipynb
-examples/.ipynb_checkpoints/3_Benchmark_ HOSQandGPLS_biconcavedisk-checkpoint.ipynb
-examples/.ipynb_checkpoints/4_Benchmark_ HOSQandGPLS_genus_2-checkpoint.ipynb
-examples/.ipynb_checkpoints/5_Benchmark_ HOSQandGPLS_torus-checkpoint.ipynb
-examples/.ipynb_checkpoints/6_Benchmark_ HOSQandGPLS_Dziuk’s surface-checkpoint.ipynb
 examples/.ipynb_checkpoints/Gauss_Bonnet_theorem_bench-checkpoint.ipynb
 examples/.ipynb_checkpoints/Test_integration_on_the_whole_sphere-checkpoint.ipynb
 examples/.ipynb_checkpoints/Test_integration_on_torus-checkpoint.ipynb
@@ -154,30 +144,30 @@ examples/.ipynb_checkpoints/Test_integration_on_torus_paper-checkpoint.ipynb
 images/G_bonnet_for_bionc_linf.png
 images/G_bonnet_for_genus_2_linf.png
 images/G_bonnet_for_torus_linf2_new.png
+images/Y^4_5_spherical_harmonic.png
 images/approximation_frame.jpg
 images/bionc_pict.png
 images/dufyy_equi.png
+images/dziku's_surface.png
+images/ellipsoid.png
 images/genus_pict.png
 images/square_equi.png
 images/ss_equi.png
 images/surfgeopy_logo.png
 images/torus_pict_R=0.5.png
-meshes/Ellipsoid_N=4024.mat
+meshes/.DS_Store
 meshes/SphereMesh_N=124_r=1.mat
 meshes/SphereMesh_N=1652_r=1.mat
+meshes/bioconcave_N=3144_d=0.5_c=0.375.mat
+meshes/bioconcave_N=5980.mat
 meshes/double_torus_8360.mat
 meshes/dziukmesh_N=8088.mat
-meshes/ellipsoid_N=6152_n.mat
+meshes/ellipsoid_N=4024_a=0.6_b=0.8_c=2.mat
 meshes/ellipsoid_a=1_b=08_0.6_248.mat
-meshes/genus_N=15632.mat
-meshes/genus_N=7484.mat
+meshes/genus_two_N=15632.mat
 meshes/torus_1232.mat
-meshes/torus_2528.mat
 meshes/torus_260.mat
 meshes/torus_496.mat
-meshes/torus_N=2512.mat
-meshes/vogitMesh_N=3144_d=0.5_c=0.375.mat
-meshes/vogitMesh_N=5980.mat
 surfgeopy/.DS_Store
 surfgeopy/.buildinfo
 surfgeopy/__init__.py

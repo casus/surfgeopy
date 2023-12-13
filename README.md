@@ -117,9 +117,35 @@ The `-e` argument specifies to install softlinks so that any changes made by the
 as you cannot always assume the files `setup.py` will always be present
 in the further development of `surfgeopy`.
 
-## 🥳 Usage
 
-Documentation is a WIP. Please refer to the example Jupyter notebooks in the 👉 `examples/` directory to get started with the library.
+- Documentation: https://surfgeopy.readthedocs.io
+
+## Testing
+
+After installation, we encourage you to at least run the unit tests of `surfgeopy`,
+where we use [`pytest`](https://docs.pytest.org/en/6.2.x/) to run the tests.
+
+If you want to run all tests, type:
+
+```bash
+pytest [-vvv]
+```
+
+## Contributing to `surfgeopy`
+
+Contributions to the `surfgeopy` packages are highly welcome.
+We recommend you have a look at the [CONTRIBUTING.md](./CONTRIBUTING.md) first.
+For a more comprehensive contribution guide visit
+the [Contributors section](link-to-developer-section) of the documentation.
+
+
+## Credits and contributors
+
+This work was partly funded by the Center for Advanced Systems Understanding (CASUS)
+that is financed by Germany’s Federal Ministry of Education and Research (BMBF)
+and by the Saxony Ministry for Science, Culture and Tourism (SMWK)
+with tax funds on the basis of the budget approved by the Saxony State Parliament.
+
 
 ## 👷 Development team
 
