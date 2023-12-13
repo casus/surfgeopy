@@ -1,3 +1,4 @@
+![License](https://codebase.helmholtz.cloud/interpol/surfgeopy/-/blob/dev/LICENSE?ref_type=heads)](https://choosealicense.com/licenses/mit/)
 ![](./images/surfgeopy_logo.png)
 `surfgeopy` is a Python package that is freely available and open-source. Its purpose is to calculate approximations of surface integrals over smooth embedded manifolds.
 
