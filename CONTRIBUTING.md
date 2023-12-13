@@ -206,7 +206,7 @@ The unit tests themselves must always be placed into the `tests` directory.
 To run all tests, type:
 
 ```bash
-pytest
+pytest tests/test.py
 ```
 
 from within the `surfgeopy` source directory.
@@ -283,25 +283,6 @@ The docs itself contains two different main sections:
 - The examples (`docs/examples`) contains all the tutorials of `surfgeopy`.
 - The modules(`docs/modules`) contains the reference to all exposed components of `surfgeopy`.
 
-
-## Code Style
-
-To ensure the readability of the codebase, we are following a common code style for `surfgeopy`.
-Our long-term goal is to fulfill the [PEP8](https://www.python.org/dev/peps/pep-0008/) regulations.
-For the build system, it is recommended to follow [PEP517](https://www.python.org/dev/peps/pep-0517/)
-and [PEP518](https://www.python.org/dev/peps/pep-0518/).
-However, since these requirements are very challenging, we use [black](https://github.com/psf/black) to enforce the code style of `surfgeopy`.
-
-During the development process,
-you can check the format using [pre-commit](https://pre-commit.com) (see below) and
-
-In the development process, one can check the format using  and the hooks defined in `.pre-commit-config.yaml`. For instance running `black` for the whole `surfgeopy` code, just run
-
-```bash
-pre-commit run black --all-files
-```
-
-For now, it is recommended to run single hooks.
 
 ## Pre-commit
 
