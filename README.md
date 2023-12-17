@@ -1,5 +1,4 @@
 # Surfgeopy
-[![Code style: black][black-badge]][black-link]
 [![License](https://img.shields.io/github/license/zavala92/surfgeopy?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-380/)
 
