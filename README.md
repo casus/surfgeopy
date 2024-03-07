@@ -48,18 +48,6 @@ Substituting the surface geometry $\varphi_i$ with Chebyshev–Lobatto interpola
 Square-triangle transformations: Deformations of an equidistant grid (left picture) under Duffy's transformation (middle picture) and square-squeezing (right picture)
 
 
-.. figure:: images/ss_map.png
-   :width: 100%
-   :align: center
-   :alt: ss_map
-   :figclass: custom-image-class
-  
-   
-.. _figure-2-caption:
-
-.. admonition:: Figure 2
-
-   Bilinear square--simplex transformations: Deformations of equidistant grids,  under Duffy's transformation (b) and square-squeezing  (c).
 
 ## Square-triangle transformation
 
