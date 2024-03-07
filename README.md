@@ -45,15 +45,27 @@ Substituting the surface geometry $\varphi_i$ with Chebyshev–Lobatto interpola
  $\int_S fdS \approx\sum_{i=1}^K \int_{\square_2} (f\circ\varphi_i)(\mathrm{x}) \sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{x}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{x}))} d\mathrm{x}\approx \sum_{i=1}^K \sum_{\mathrm{p} \in P}\omega_{\mathrm{p}} (f \circ\varphi_i)(\mathrm{p})\sqrt{\det((DQ_{G_{2,k}}\varphi_i(\mathrm{p}))^T DQ_{G_{2,k}}\varphi_i(\mathrm{p}))}.$
 
 
+Square-triangle transformations: Deformations of an equidistant grid (left picture) under Duffy's transformation (middle picture) and square-squeezing (right picture)
 
+
+.. figure:: images/ss_map.png
+   :width: 100%
+   :align: center
+   :alt: ss_map
+   :figclass: custom-image-class
+  
+   
+.. _figure-2-caption:
+
+.. admonition:: Figure 2
+
+   Bilinear square--simplex transformations: Deformations of equidistant grids,  under Duffy's transformation (b) and square-squeezing  (c).
 
 ## Square-triangle transformation
 
-- Square-triangle transformations: Deformations of an equidistant grid (left picture)  under Duffy's transformation (middle picture) and square-squeezing  (right picture)
+- Square-triangle transformations: Deformations of an equidistant grid (left picture) under Duffy's transformation (middle picture) and square-squeezing (right picture)
 
-<img src="images/square_equi.png" alt="drawing" width="250"/>
-<img src="images/dufyy_equi.png" alt="drawing" width="250"/>
-<img src="images/ss_equi.png" alt="drawing" width="250"/>
+<img src="images/ss_map.png" alt="drawing" width="4000"/>
 
  <h2 align="center">
 💝 Results ! 💝
@@ -139,8 +151,6 @@ pytest [-vvv]
 
 Contributions to the `surfgeopy` packages are highly welcome.
 We recommend you have a look at the [CONTRIBUTING.md](./CONTRIBUTING.md) first.
-For a more comprehensive contribution guide visit
-the [Contributors section](link-to-developer-section) of the documentation.
 
 
 ## Credits and contributors
