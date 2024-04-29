@@ -118,7 +118,7 @@ The `-e` argument specifies to install softlinks so that any changes made by the
 as you cannot always assume the files `setup.py` will always be present
 in the further development of `surfgeopy`.
 
-
+- If you would like to use `surfgeopy` in MATLAB, please refer to [this link](https://codebase.helmholtz.cloud/interpol/surfgeopy/-/blob/dev/README_MATLAB.md?ref_type=heads).
 - Documentation: https://surfgeopy.readthedocs.io
 
 ## Testing
