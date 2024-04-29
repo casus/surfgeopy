@@ -25,29 +25,31 @@
 - Specify Python executable:
   
     ```matlab
-    % py_exe =  "/usr/bin/python3";
+     py_exe =  "/usr/bin/python3";
     ```
     
     In case you would like to install the `matplotlib` package:
   
     ```matlab
-    % system([py_exe, ' -m pip install matplotlib']);
+     system([py_exe, ' -m pip install matplotlib']);
     ```
 
-## 2. Installation from a Cloned Repository
+## 2. 🚀 Installing from a Cloned Repository
 
-In case you would like to install from a cloned repository:
+If you prefer installing from a cloned repository, such as [minterpy_levelsets](https://github.com/minterpy-project/minterpy-levelsets), here's how you can do it:
 
-    ```matlab
+```matlab
+    
     % path_minterpy_levelsets = 'path where minterpy-levelsets is located';
     system([py_exe, ' -m pip install ',  path_minterpy_levelsets]);
-    ```
+    
+```
 
 In case you would like to uninstall minterpy_levelsets package:
 
-    ```matlab
+ ```matlab
     system([py_exe, ' -m pip uninstall -y minterpy_levelsets']);
-    ```
+```
 
 ## 3. Calling Python Codes from MATLAB
 
@@ -89,13 +91,14 @@ print(f"L_inf validation error = {linf_validation_error:.3}")
 vtk_data = ls.output_VTK(point_data);
 linf_validation_error = linf_validation_error.item();
 
+```
 To run the level_ellipsoid.py in MATLAB command window, you need to write:
 
- ```matlab
+
+```matlab
     level_ellipsoid_module = py.importlib.import_module('level_ellipsoid');
     %py.importlib.reload(level_ellipsoid_module);
-
-    ```
+ ```
 The output after running would look like below:
 
 ```matlab
@@ -104,5 +107,4 @@ The output after running would look like below:
     Levelset error (method = 'BK'), n = 4, lp = 2.0 : 8.326672684688674e-17
     L_inf error = 6.478176983772814e-12
     L_inf validation error = 4.19e-12
-
-    ```
+```
