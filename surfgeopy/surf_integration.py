@@ -220,10 +220,10 @@ def quadrature_surf_tri(ls_function, ls_grad_func, vertices, faces, interp_deg,
 
   
         # compute partial derivatives with respect to "s"
-        ds_poly =newt_poly.diff([1, 0])
+        ds_poly =newt_poly.diff([1, 0],backend="numba-par")
 
         # compute partial derivatives with respect to "t"
-        dt_poly =newt_poly.diff([0, 1])
+        dt_poly =newt_poly.diff([0, 1],backend="numba-par")
         if quadrature_rule == 'Pull_back_Gauss':
             for qq in range(nqp):
                 # there are two alternatives to project quadrature points on the  manifold
