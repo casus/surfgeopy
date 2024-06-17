@@ -2,6 +2,7 @@ CONTRIBUTING.md
 LICENSE
 MANIFEST.in
 README.md
+README_MATLAB.md
 gitlab-ci.yml
 pyproject.toml
 readthedocs.yaml

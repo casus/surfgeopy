@@ -5,7 +5,7 @@ Surface Integrals Benchmark using Gauss-Bonnet Theorem
 Overview
 --------
 
-This document outlines a comprehensive benchmark for the computation of surface integrals utilizing the high-order surface quadrature (HOSQ) method, specifically tailored for algebraic varieties.
+This document outlines a comprehensive benchmark for the computation of surface integrals utilizing the high-order volume elements (HOVE) algorithm, specifically tailored for algebraic varieties.
 
 Gauss-Bonnet Theorem on Torus
 ------------------------------

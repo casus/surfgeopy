@@ -4,7 +4,7 @@ Surface Area Computation Benchmark for Torus
 
 This benchmark focuses on the computational task of computing surface areas.
 
-We perform the Higher-Order Surface Quadrature (HOSQ) algorithm for a torus :math:`T^2_{r,R}` with an inner radius :math:`r=1` and an outer radius :math:`R=2`. We employ the `distmesh` tool to generate Delaunay triangulations, resulting in a mesh with :math:`N_{\Delta}=260` triangles for the torus.
+We perform the high-order volume elements (HOVE) algorithm for a torus :math:`T^2_{r,R}` with an inner radius :math:`r=1` and an outer radius :math:`R=2`. We employ the `distmesh` tool to generate Delaunay triangulations, resulting in a mesh with :math:`N_{\Delta}=260` triangles for the torus.
 
 Imports
 ~~~~~~~

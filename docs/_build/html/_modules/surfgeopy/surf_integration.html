@@ -372,10 +372,10 @@
 
   
         <span class="c1"># compute partial derivatives with respect to &quot;s&quot;</span>
-        <span class="n">ds_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">ds_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
 
         <span class="c1"># compute partial derivatives with respect to &quot;t&quot;</span>
-        <span class="n">dt_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">dt_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">quadrature_rule</span> <span class="o">==</span> <span class="s1">&#39;Pull_back_Gauss&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">qq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nqp</span><span class="p">):</span>
                 <span class="c1"># there are two alternatives to project quadrature points on the  manifold</span>

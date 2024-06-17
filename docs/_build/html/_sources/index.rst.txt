@@ -6,7 +6,7 @@ Welcome to the documentation for surfgeopy, a Python package for calculating sur
 Introduction
 ------------
 
-``surfgeopy`` is an open-source Python package designed for approximating surface integrals over smooth embedded manifolds. It employs curved surface triangulations through k-th order interpolation of the closest point projection. This extends initial linear surface approximations.
+``surfgeopy`` is an open-source Python package designed for approximating surface integrals over smooth embedded manifolds . It employs curved surface triangulations through k-th order interpolation of the closest point projection. This extends initial linear surface approximations.
 
 Square-Squeezing Technique
 --------------------------
