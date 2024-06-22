@@ -113,8 +113,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#gauss-legendre-py">gauss_legendre.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#remesh-py">remesh.py</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
@@ -150,31 +156,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for surfgeopy.utils</h1><div class="highlight"><pre>
-<span></span><span class="c1">#Imports</span>
+<span></span><span class="c1"># Imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numba</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compute_norm&#39;</span><span class="p">,</span> <span class="s1">&#39;_cross&#39;</span><span class="p">,</span> <span class="s1">&#39;max_edge_length&#39;</span><span class="p">,</span><span class="s1">&#39;decimal_to_digits&#39;</span><span class="p">,</span>
-                           <span class="s1">&#39;float_to_int&#39;</span><span class="p">,</span> <span class="s1">&#39;pushforward&#39;</span><span class="p">,</span> <span class="s1">&#39;pullback&#39;</span><span class="p">,</span><span class="s1">&#39;SimpleImplicitSurfaceProjection&#39;</span><span class="p">,</span><span class="s1">&#39;read_mesh_data&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;compute_norm&#39;</span><span class="p">,</span> <span class="s1">&#39;_cross&#39;</span><span class="p">,</span> <span class="s1">&#39;max_edge_length&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal_to_digits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float_to_int&#39;</span><span class="p">,</span> <span class="s1">&#39;pushforward&#39;</span><span class="p">,</span> <span class="s1">&#39;pullback&#39;</span><span class="p">,</span> <span class="s1">&#39;SimpleImplicitSurfaceProjection&#39;</span><span class="p">,</span> <span class="s1">&#39;read_mesh_data&#39;</span>
+<span class="p">]</span>
 
 <span class="n">_TYPE_MAP</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;f8&quot;</span><span class="p">,</span> <span class="s2">&quot;i4&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">,</span> <span class="s2">&quot;i8&quot;</span><span class="p">)]</span>
-<span class="n">NB_OPTS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nogil&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="n">NB_OPTS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nogil&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="c1"># which works out to be 1e-13</span>
 <span class="n">TOL_ZERO</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">resolution</span> <span class="o">*</span> <span class="mi">100</span>
 <span class="c1"># how close to merge vertices</span>
 <span class="n">TOL_MERGE</span> <span class="o">=</span> <span class="mf">1e-8</span>
 
-
-<div class="viewcode-block" id="compute_norm"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.compute_norm">[docs]</a><span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{0}</span><span class="s2">[:])&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">)],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_norm</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_norm"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.compute_norm">[docs]</a><span class="nd">@njit</span><span class="p">([</span><span class="s2">&quot;float64(float64[:])&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">compute_norm</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Euclidean norm of a given vector.</span>
-
-<span class="sd">    This function uses Numba&#39;s just-in-time (JIT) compilation for improved performance.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -189,41 +194,33 @@
     <span class="n">sqnorm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">)):</span>
         <span class="n">sqnorm</span> <span class="o">+=</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">sqnorm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sqnorm</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sqnorm</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sqnorm</span><span class="p">)</span></div>
 
-
-
-<span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">[:](</span><span class="si">{0}</span><span class="s2">[:], </span><span class="si">{0}</span><span class="s2">[:])&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">)],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Cross product axb</span>
+<span class="nd">@njit</span><span class="p">([</span><span class="s2">&quot;float64[:](float64[:], float64[:])&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_cross</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the cross product of two vectors.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
-<span class="sd">    a, b: np.ndarray</span>
-<span class="sd">        nx3 coordinates</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : np.ndarray</span>
+<span class="sd">        Input vectors.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    np.ndarray</span>
-<span class="sd">        The cross product of :math:`\boldsymbol{a}\times\boldsymbol{b}`.</span>
+<span class="sd">        Cross product of the input vectors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-            <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
-
-
-<div class="viewcode-block" id="max_edge_length"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.max_edge_length">[docs]</a><span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{0}</span><span class="s2">[:,:])&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">)],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">max_edge_length</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+<div class="viewcode-block" id="max_edge_length"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.max_edge_length">[docs]</a><span class="nd">@njit</span><span class="p">([</span><span class="s2">&quot;float64(float64[:, :])&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">NB_OPTS</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">max_edge_length</span><span class="p">(</span><span class="n">xs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the maximum edge length of a triangle defined by its vertices.</span>
-
-<span class="sd">    This function uses Numba&#39;s just-in-time (JIT) compilation for improved performance.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -236,87 +233,87 @@
 <span class="sd">    float</span>
 <span class="sd">        Maximum edge length among all the triangles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Compute maximum edge length of elements</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
         <span class="n">compute_norm</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
         <span class="n">compute_norm</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
-        <span class="n">compute_norm</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">compute_norm</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="p">)</span></div>
 
-<div class="viewcode-block" id="decimal_to_digits"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.decimal_to_digits">[docs]</a><span class="k">def</span> <span class="nf">decimal_to_digits</span><span class="p">(</span><span class="n">decimal</span><span class="p">,</span> <span class="n">min_digits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="decimal_to_digits"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.decimal_to_digits">[docs]</a><span class="k">def</span> <span class="nf">decimal_to_digits</span><span class="p">(</span><span class="n">decimal</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">min_digits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the number of digits to the first nonzero decimal.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
-<span class="sd">    decimal:    float</span>
-<span class="sd">    min_digits: int, minimum number of digits to return</span>
+<span class="sd">    ----------</span>
+<span class="sd">    decimal : float</span>
+<span class="sd">        The decimal number to analyze.</span>
+<span class="sd">    min_digits : Optional[int], default=None</span>
+<span class="sd">        Minimum number of digits to return.</span>
+
 <span class="sd">    Returns</span>
-<span class="sd">    -----------</span>
-<span class="sd">    digits: int, number of digits to the first nonzero decimal</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        Number of digits to the first nonzero decimal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">digits</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">decimal</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">min_digits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">digits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">min_digits</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">digits</span></div>
 
-
-<div class="viewcode-block" id="float_to_int"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.float_to_int">[docs]</a><span class="k">def</span> <span class="nf">float_to_int</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">):</span>
+<div class="viewcode-block" id="float_to_int"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.float_to_int">[docs]</a><span class="k">def</span> <span class="nf">float_to_int</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">digits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given a numpy array of float/bool/int, return as integers.</span>
+<span class="sd">    Convert a numpy array of float/bool/int to integers.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    -------------</span>
-<span class="sd">    data :  (n, d) float, int, or bool</span>
-<span class="sd">      Input data</span>
-<span class="sd">    digits : float or int</span>
-<span class="sd">      Precision for float conversion</span>
-<span class="sd">    dtype : numpy.dtype</span>
-<span class="sd">      What datatype should result be returned as</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : np.ndarray</span>
+<span class="sd">        Input data array.</span>
+<span class="sd">    digits : Optional[int], default=None</span>
+<span class="sd">        Precision for float conversion.</span>
+<span class="sd">    dtype : np.dtype, default=np.int32</span>
+<span class="sd">        Datatype for the result.</span>
+
 <span class="sd">    Returns</span>
-<span class="sd">    -------------</span>
-<span class="sd">    as_int : (n, d) int</span>
-<span class="sd">      Data as integers</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Data converted to integers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># convert to any numpy array</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="c1"># if data is already an integer or boolean we&#39;re done</span>
-    <span class="c1"># if the data is empty we are also done</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="s1">&#39;ib&#39;</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="c1"># vertices closer than this should be merged</span>
-        <span class="n">tol_merge</span> <span class="o">=</span> <span class="mf">1e-8</span>
-    <span class="c1"># populate digits from kwargs</span>
+
+    <span class="n">tol_merge</span> <span class="o">=</span> <span class="n">TOL_MERGE</span>
     <span class="k">if</span> <span class="n">digits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">digits</span> <span class="o">=</span> <span class="n">decimal_to_digits</span><span class="p">(</span><span class="n">tol_merge</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)):</span>
         <span class="n">digits</span> <span class="o">=</span> <span class="n">decimal_to_digits</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Digits were passed as </span><span class="si">%s</span><span class="s1">!&#39;</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Digits must be None, int, or float!&#39;</span><span class="p">)</span>
-    <span class="c1"># data is float so convert to large integers</span>
-    <span class="n">data_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="n">digits</span>
-    <span class="c1"># ignore passed dtype if we have something large</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">data_max</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">)]</span>
-    <span class="c1"># multiply by requested power of ten</span>
-    <span class="c1"># then subtract small epsilon to avoid &quot;go either way&quot; rounding</span>
-    <span class="c1"># then do the rounding and convert to integer</span>
-    <span class="n">as_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">data</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">digits</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
 
+    <span class="n">data_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="n">digits</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span> <span class="k">if</span> <span class="n">data_max</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+    <span class="n">as_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">data</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">digits</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">as_int</span></div>
 
-<div class="viewcode-block" id="pushforward"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.pushforward">[docs]</a><span class="k">def</span> <span class="nf">pushforward</span><span class="p">(</span><span class="n">unisolvent_nodes</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="pushforward"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.pushforward">[docs]</a><span class="k">def</span> <span class="nf">pushforward</span><span class="p">(</span><span class="n">unisolvent_nodes</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform Chebyshev points from [-1, 1]^2 to a reference simplex.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        unisolvent_nodes (ndarray): Chebyshev points on the square.</span>
-<span class="sd">        duffy_transform (bool): Whether to apply Duffy&#39;s transform.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    unisolvent_nodes : np.ndarray</span>
+<span class="sd">        Chebyshev points on the square.</span>
+<span class="sd">    duffy_transform : bool, default=False</span>
+<span class="sd">        Whether to apply Duffy&#39;s transform.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        ndarray: Transformed points on the simplex.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Transformed points on the simplex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">unisolvent_nodes</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">unisolvent_nodes</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">unisolvent_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">unisolvent_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">duffy_transform</span><span class="p">:</span>
         <span class="n">points_simplex_x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
         <span class="n">points_simplex_y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
@@ -326,20 +323,23 @@
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">points_simplex_x</span><span class="p">,</span> <span class="n">points_simplex_y</span><span class="p">))</span></div>
 
-
-<div class="viewcode-block" id="pullback"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.pullback">[docs]</a><span class="k">def</span> <span class="nf">pullback</span><span class="p">(</span><span class="n">qpoint_triangle</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="pullback"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.pullback">[docs]</a><span class="k">def</span> <span class="nf">pullback</span><span class="p">(</span><span class="n">qpoint_triangle</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform quadrature points from the reference simplex to a unit square.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        qpoint_triangle (ndarray): Quadrature points on the reference simplex.</span>
-<span class="sd">        duffy_transform (bool): Whether to apply Duffy&#39;s transform.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    qpoint_triangle : np.ndarray</span>
+<span class="sd">        Quadrature points on the reference simplex.</span>
+<span class="sd">    duffy_transform : bool, default=False</span>
+<span class="sd">        Whether to apply Duffy&#39;s transform.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        ndarray: Transformed points on the [-1, 1]^2.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Transformed points on the [-1, 1]^2.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">qpoint_triangle</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">qpoint_triangle</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-
     <span class="k">if</span> <span class="n">duffy_transform</span><span class="p">:</span>
         <span class="n">qpoint_square_x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">qpoint_square_y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span>
@@ -350,23 +350,34 @@
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">qpoint_square_x</span><span class="p">,</span> <span class="n">qpoint_square_y</span><span class="p">))</span></div>
 
- 
-<span class="c1"># @njit(fastmath=True)</span>
-<div class="viewcode-block" id="SimpleImplicitSurfaceProjection"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.SimpleImplicitSurfaceProjection">[docs]</a><span class="k">def</span> <span class="nf">SimpleImplicitSurfaceProjection</span><span class="p">(</span><span class="n">phi</span><span class="p">:</span> <span class="nb">callable</span><span class="p">,</span> <span class="n">dphi</span><span class="p">:</span> <span class="nb">callable</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Closest-point projection to surface given by an implicit function using a simple projection algorithm.</span>
-<span class="sd">    </span>
-<span class="sd">    Args:</span>
-<span class="sd">        phi: Zero-levelset function</span>
-<span class="sd">        dphi: Gradient of zero-levelset function</span>
-<span class="sd">        x: The point to be projected</span>
-<span class="sd">        max_iter: Maximum number of iterations for the projection</span>
-<span class="sd">        </span>
-<span class="sd">    Returns:</span>
-<span class="sd">        The projection point&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SimpleImplicitSurfaceProjection"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.SimpleImplicitSurfaceProjection">[docs]</a><span class="k">def</span> <span class="nf">SimpleImplicitSurfaceProjection</span><span class="p">(</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">dphi</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Closest-point projection to surface given by an implicit function.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : Callable[[np.ndarray], float]</span>
+<span class="sd">        Zero-levelset function.</span>
+<span class="sd">    dphi : Callable[[np.ndarray], np.ndarray]</span>
+<span class="sd">        Gradient of zero-levelset function.</span>
+<span class="sd">    x : np.ndarray</span>
+<span class="sd">        The point to be projected.</span>
+<span class="sd">    max_iter : int, default=10</span>
+<span class="sd">        Maximum number of iterations for the projection.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The projection point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tol</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
     <span class="n">phi_v</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
         <span class="n">grad_phi</span> <span class="o">=</span> <span class="n">dphi</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">grad_phi_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">grad_phi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">normalize</span> <span class="o">=</span> <span class="n">phi_v</span> <span class="o">/</span> <span class="n">grad_phi_norm</span>
@@ -381,35 +392,35 @@
 
     <span class="k">return</span> <span class="n">x</span></div>
 
-<div class="viewcode-block" id="read_mesh_data"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.read_mesh_data">[docs]</a><span class="k">def</span> <span class="nf">read_mesh_data</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">):</span>
+<div class="viewcode-block" id="read_mesh_data"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.utils.read_mesh_data">[docs]</a><span class="k">def</span> <span class="nf">read_mesh_data</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read mesh data from a MAT file.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        mesh_path (str): The file path to the MAT file containing mesh data.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh_path : str</span>
+<span class="sd">        The file path to the MAT file containing mesh data.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        vertices (numpy.ndarray): The &#39;vertices&#39; data from the MAT file.</span>
-<span class="sd">        faces (numpy.ndarray): The &#39;faces&#39; data from the MAT file.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[Optional[np.ndarray], Optional[np.ndarray]]</span>
+<span class="sd">        Vertices and faces data from the MAT file.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        FileNotFoundError: If the specified file does not exist.</span>
-<span class="sd">        Exception: If an error occurs during file reading.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        If the specified file does not exist.</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If an error occurs during file reading.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: </span><span class="si">{</span><span class="n">mesh_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Check if the file exists</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: </span><span class="si">{</span><span class="n">mesh_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Load the MAT file</span>
         <span class="n">mesh_mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
-
-        <span class="c1"># Get a list of keys in the loaded dictionary</span>
         <span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mesh_mat</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-        <span class="c1"># Access the &#39;vertices&#39; and &#39;faces&#39; data</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh_mat</span><span class="p">[</span><span class="n">key_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh_mat</span><span class="p">[</span><span class="n">key_list</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>  
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh_mat</span><span class="p">[</span><span class="n">key_list</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Convert to zero-based indexing</span>
 
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>

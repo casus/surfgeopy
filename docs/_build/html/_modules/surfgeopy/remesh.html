@@ -113,8 +113,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#gauss-legendre-py">gauss_legendre.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#remesh-py">remesh.py</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
@@ -150,280 +156,215 @@
            <div itemprop="articleBody">
              
   <h1>Source code for surfgeopy.remesh</h1><div class="highlight"><pre>
-<span></span><span class="c1">#Imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1">#Local Imports</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span></span><span class="c1"># remesh.py</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">remesh.py</span>
 <span class="sd">-------------</span>
-<span class="sd">Deal with re- triangulation of existing meshes.</span>
+<span class="sd">Deal with re-triangulation of existing meshes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subdivide&#39;</span><span class="p">,</span><span class="s1">&#39;faces_to_edges&#39;</span><span class="p">,</span><span class="s1">&#39;unique_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;hashable_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;unique_ordered&#39;</span><span class="p">]</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
-<div class="viewcode-block" id="subdivide"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.subdivide">[docs]</a><span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span>
-              <span class="n">faces</span><span class="p">,</span>
-              <span class="n">face_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">vertex_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">return_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subdivide&#39;</span><span class="p">,</span> <span class="s1">&#39;faces_to_edges&#39;</span><span class="p">,</span> <span class="s1">&#39;unique_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;hashable_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;unique_ordered&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="subdivide"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.subdivide">[docs]</a><span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">face_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vertex_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Subdivide a mesh into smaller triangles.</span>
-
-<span class="sd">    Note that if `face_index` is passed, only those</span>
-<span class="sd">    faces will be subdivided and their neighbors won&#39;t</span>
-<span class="sd">    be modified making the mesh no longer &quot;watertight.&quot;</span>
+<span class="sd">    Note that if `face_index` is passed, only those faces will be subdivided </span>
+<span class="sd">    and their neighbors won&#39;t be modified, making the mesh no longer &quot;watertight.&quot;</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ------------</span>
+<span class="sd">    ----------</span>
 <span class="sd">    vertices : (n, 3) float</span>
-<span class="sd">      Vertices in space</span>
+<span class="sd">        Vertices in space</span>
 <span class="sd">    faces : (m, 3) int</span>
-<span class="sd">      Indexes of vertices which make up triangular faces</span>
-<span class="sd">    face_index : faces to subdivide.</span>
-<span class="sd">      if None: all faces of mesh will be subdivided</span>
-<span class="sd">      if (n,) int array of indices: only specified faces</span>
-<span class="sd">    vertex_attributes : dict</span>
-<span class="sd">      Contains (n, d) attribute data</span>
-<span class="sd">    return_index : bool</span>
-<span class="sd">      If True, return index of original face for new faces</span>
+<span class="sd">        Indices of vertices which make up triangular faces</span>
+<span class="sd">    face_index : array_like, optional</span>
+<span class="sd">        Indices of faces to subdivide. If None, all faces of the mesh will be subdivided.</span>
+<span class="sd">    vertex_attributes : dict, optional</span>
+<span class="sd">        Contains (n, d) attribute data</span>
+<span class="sd">    return_index : bool, optional</span>
+<span class="sd">        If True, return index of original face for new faces</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    ----------</span>
+<span class="sd">    -------</span>
 <span class="sd">    new_vertices : (q, 3) float</span>
-<span class="sd">      Vertices in space</span>
+<span class="sd">        Vertices in space</span>
 <span class="sd">    new_faces : (p, 3) int</span>
-<span class="sd">      Remeshed faces</span>
-<span class="sd">    index_dict : dict</span>
-<span class="sd">      Only returned if `return_index`, {index of</span>
-<span class="sd">      original face : index of new faces}.</span>
+<span class="sd">        Remeshed faces</span>
+<span class="sd">    index_dict : dict, optional</span>
+<span class="sd">        Only returned if `return_index` is True. </span>
+<span class="sd">        {index of original face : index of new faces}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">face_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">face_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">face_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="c1"># Create a mask to select faces for subdivision</span>
+    <span class="n">face_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span> <span class="k">if</span> <span class="n">face_index</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">face_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">face_mask</span><span class="p">[</span><span class="n">face_index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="c1"># the (c, 3) int array of vertex indices</span>
+    <span class="c1"># Select faces to be subdivided</span>
     <span class="n">faces_subset</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">face_mask</span><span class="p">]</span>
 
-    <span class="c1"># find the unique edges of our faces subset</span>
+    <span class="c1"># Find unique edges of the selected faces</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">faces_to_edges</span><span class="p">(</span><span class="n">faces_subset</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">unique</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">unique_rows</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
     
-    <span class="c1"># then only produce one midpoint per unique edge</span>
+    <span class="c1"># Compute midpoints for unique edges</span>
     <span class="n">mid</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">edges</span><span class="p">[</span><span class="n">unique</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">mid_idx</span> <span class="o">=</span> <span class="n">inverse</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
-    <span class="c1"># the new faces_subset with correct winding</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                         <span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                         <span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                         <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="c1"># Create new faces using the original vertices and midpoints</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span>
+        <span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">faces_subset</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">mid_idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
-    <span class="c1"># add the 3 new faces_subset per old face all on the end</span>
-    <span class="c1"># by putting all the new faces after all the old faces</span>
+    <span class="c1"># Combine the old faces and new subdivided faces</span>
     <span class="n">new_faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">faces</span><span class="p">[</span><span class="o">~</span><span class="n">face_mask</span><span class="p">],</span> <span class="n">f</span><span class="p">))</span>
-    <span class="c1"># stack the new midpoint vertices on the end</span>
     <span class="n">new_vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">mid</span><span class="p">))</span>
 
+    <span class="c1"># Handle vertex attributes if provided</span>
     <span class="k">if</span> <span class="n">vertex_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">new_attributes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">vertex_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">attr_tris</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">faces_subset</span><span class="p">]</span>
-            <span class="n">attr_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
-                <span class="n">attr_tris</span><span class="p">[:,</span> <span class="n">g</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                          <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-                          <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
+            <span class="n">attr_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">attr_tris</span><span class="p">[:,</span> <span class="n">g</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
             <span class="n">attr_mid</span> <span class="o">=</span> <span class="n">attr_mid</span><span class="p">[</span><span class="n">unique</span><span class="p">]</span>
-            <span class="n">new_attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
-                <span class="n">values</span><span class="p">,</span> <span class="n">attr_mid</span><span class="p">))</span>
+            <span class="n">new_attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">values</span><span class="p">,</span> <span class="n">attr_mid</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">new_vertices</span><span class="p">,</span> <span class="n">new_faces</span><span class="p">,</span> <span class="n">new_attributes</span>
 
+    <span class="c1"># Return index mapping of new faces to original faces if required</span>
     <span class="k">if</span> <span class="n">return_index</span><span class="p">:</span>
-        <span class="c1"># turn the mask back into integer indexes</span>
         <span class="n">nonzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">face_mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># new faces start past the original faces</span>
-        <span class="c1"># but we&#39;ve removed all the faces in face_mask</span>
         <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonzero</span><span class="p">)</span>
-        <span class="c1"># indexes are just offset from start</span>
-        
-        <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-            <span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-        <span class="c1"># reformat into a slightly silly dict for some reason</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
         <span class="n">index_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nonzero</span><span class="p">,</span> <span class="n">stack</span><span class="p">)}</span>
-
         <span class="k">return</span> <span class="n">new_vertices</span><span class="p">,</span> <span class="n">new_faces</span><span class="p">,</span> <span class="n">index_dict</span>
 
     <span class="k">return</span> <span class="n">new_vertices</span><span class="p">,</span> <span class="n">new_faces</span></div>
 
-
-
 <div class="viewcode-block" id="faces_to_edges"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.faces_to_edges">[docs]</a><span class="k">def</span> <span class="nf">faces_to_edges</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a list of faces (n,3), return a list of edges (n*3,2)</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
+<span class="sd">    ----------</span>
 <span class="sd">    faces : (n, 3) int</span>
-<span class="sd">      Vertex indices representing faces</span>
+<span class="sd">        Vertex indices representing faces</span>
+
 <span class="sd">    Returns</span>
-<span class="sd">    -----------</span>
+<span class="sd">    -------</span>
 <span class="sd">    edges : (n*3, 2) int</span>
-<span class="sd">      Vertex indices representing edges</span>
+<span class="sd">        Vertex indices representing edges</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
-    <span class="c1"># each face has three edges</span>
+    <span class="c1"># Each face has three edges</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">return_index</span><span class="p">:</span>
-        <span class="c1"># edges are in order of faces due to reshape</span>
-        <span class="n">face_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)),</span>
-                             <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Create index array for edges</span>
+        <span class="n">face_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">edges</span><span class="p">,</span> <span class="n">face_index</span>
     <span class="k">return</span> <span class="n">edges</span></div>
 
-
-
 <div class="viewcode-block" id="unique_rows"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.unique_rows">[docs]</a><span class="k">def</span> <span class="nf">unique_rows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_order</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns indices of unique rows. It will return the</span>
-<span class="sd">    first occurrence of a row that is duplicated:</span>
+<span class="sd">    Returns indices of unique rows. It will return the first occurrence of a row that is duplicated:</span>
 <span class="sd">    [[1,2], [3,4], [1,2]] will return [0,1]</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    ---------</span>
+<span class="sd">    ----------</span>
 <span class="sd">    data : (n, m) array</span>
-<span class="sd">      Floating point data</span>
-<span class="sd">    digits : int or None</span>
-<span class="sd">      How many digits to consider</span>
+<span class="sd">        Floating point data</span>
+<span class="sd">    digits : int or None, optional</span>
+<span class="sd">        Number of digits to consider for uniqueness</span>
+
 <span class="sd">    Returns</span>
-<span class="sd">    --------</span>
-<span class="sd">    unique :  (j,) int</span>
-<span class="sd">      Index in data which is a unique row</span>
+<span class="sd">    -------</span>
+<span class="sd">    unique : (j,) int</span>
+<span class="sd">        Index in data which is a unique row</span>
 <span class="sd">    inverse : (n,) int</span>
-<span class="sd">      Array to reconstruct original</span>
-<span class="sd">      Example: data[unique][inverse] == data</span>
+<span class="sd">        Array to reconstruct original</span>
+<span class="sd">        Example: data[unique][inverse] == data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># get rows hashable so we can run unique function on it</span>
+    <span class="c1"># Convert rows to a hashable format</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="n">hashable_rows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="n">digits</span><span class="p">)</span>
-
-    <span class="c1"># we are throwing away the first value which is the</span>
-    <span class="c1"># garbage row-hash and only returning index and inverse</span>
     <span class="k">if</span> <span class="n">keep_order</span><span class="p">:</span>
-        <span class="c1"># keeps order of original occurrence</span>
-        <span class="k">return</span> <span class="n">unique_ordered</span><span class="p">(</span>
-            <span class="n">rows</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="c1"># returns values sorted by row-hash but since our row-hash</span>
-    <span class="c1"># were pretty much garbage the sort order isn&#39;t meaningful</span>
+        <span class="k">return</span> <span class="n">unique_ordered</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span></div>
-
 
 <div class="viewcode-block" id="hashable_rows"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.hashable_rows">[docs]</a><span class="k">def</span> <span class="nf">hashable_rows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    We turn our array into integers based on the precision</span>
-<span class="sd">    given by digits and then put them in a hashable format.</span>
+<span class="sd">    Convert array rows into a hashable format.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : (n, m) array</span>
 <span class="sd">        Input data</span>
-<span class="sd">    digits : int or None</span>
-<span class="sd">        How many digits to add to hash if data is floating point</span>
-<span class="sd">        If None, tol.merge will be used</span>
+<span class="sd">    digits : int or None, optional</span>
+<span class="sd">        Number of digits to add to hash if data is floating point</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    hashable : (n,) array</span>
-<span class="sd">        Custom data type which can be sorted</span>
-<span class="sd">        or used as hash keys</span>
+<span class="sd">        Custom data type which can be sorted or used as hash keys</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># if there is no data return immediately</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
-    <span class="c1"># get array as integer to precision we care about</span>
+    <span class="c1"># Convert data to integer format based on precision</span>
     <span class="n">as_int</span> <span class="o">=</span> <span class="n">float_to_int</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="n">digits</span><span class="p">)</span>
-
-    <span class="c1"># if it is flat integers already, return</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">as_int</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">as_int</span>
 
-    <span class="c1"># if array is 2D and smallish, we can try bitbanging</span>
-    <span class="c1"># this is significantly faster than the custom dtype</span>
+    <span class="c1"># Use bitwise operations if the array is 2D and small enough</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">as_int</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">as_int</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="c1"># time for some righteous bitbanging</span>
-        <span class="c1"># can we pack the whole row into a single 64 bit integer</span>
         <span class="n">precision</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">64</span> <span class="o">/</span> <span class="n">as_int</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="c1"># if the max value is less than precision we can do this</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">as_int</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">precision</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># the resulting package</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">as_int</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">precision</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">hashable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">as_int</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-            <span class="c1"># loop through each column and bitwise xor to combine</span>
-            <span class="c1"># make sure as_int is int64 otherwise bit offset won&#39;t work</span>
             <span class="k">for</span> <span class="n">offset</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">as_int</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
-                <span class="c1"># will modify hashable in place</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">bitwise_xor</span><span class="p">(</span><span class="n">hashable</span><span class="p">,</span>
-                               <span class="n">column</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">offset</span> <span class="o">*</span> <span class="n">precision</span><span class="p">),</span>
-                               <span class="n">out</span><span class="o">=</span><span class="n">hashable</span><span class="p">)</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">bitwise_xor</span><span class="p">(</span><span class="n">hashable</span><span class="p">,</span> <span class="n">column</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">offset</span> <span class="o">*</span> <span class="n">precision</span><span class="p">),</span> <span class="n">out</span><span class="o">=</span><span class="n">hashable</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">hashable</span>
 
-    <span class="c1"># reshape array into magical data type that is weird but hashable</span>
+    <span class="c1"># Use a custom data type for larger arrays</span>
     <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">void</span><span class="p">,</span> <span class="n">as_int</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span> <span class="o">*</span> <span class="n">as_int</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="c1"># make sure result is contiguous and flat</span>
-    <span class="n">hashable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">as_int</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">hashable</span></div>
-
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">as_int</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="unique_ordered"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.remesh.unique_ordered">[docs]</a><span class="k">def</span> <span class="nf">unique_ordered</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the same as np.unique, but ordered as per the</span>
-<span class="sd">    first occurrence of the unique value in data.</span>
-<span class="sd">    Examples</span>
-<span class="sd">    ---------</span>
-<span class="sd">    In [1]: a = [0, 3, 3, 4, 1, 3, 0, 3, 2, 1]</span>
-<span class="sd">    In [2]: np.unique(a)</span>
-<span class="sd">    Out[2]: array([0, 1, 2, 3, 4])</span>
-<span class="sd">    In [3]: trimesh.grouping.unique_ordered(a)</span>
-<span class="sd">    Out[3]: array([0, 3, 4, 1, 2])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># uniques are the values, sorted</span>
-    <span class="c1"># index is the value in the original `data`</span>
-    <span class="c1"># i.e. `data[index] == unique`</span>
-    <span class="c1"># inverse is how to re-construct `data` from `unique`</span>
-    <span class="c1"># i.e. `unique[inverse] == data`</span>
-    <span class="n">unique</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    Returns the same as np.unique, but ordered as per the first occurrence of the unique value in data.</span>
 
-    <span class="c1"># we want to maintain the original index order</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : array-like</span>
+<span class="sd">        Input data</span>
+<span class="sd">    return_index : bool, optional</span>
+<span class="sd">        Return indices of unique values</span>
+<span class="sd">    return_inverse : bool, optional</span>
+<span class="sd">        Return the inverse of the unique array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unique : array-like</span>
+<span class="sd">        The sorted unique values</span>
+<span class="sd">    index : array-like, optional</span>
+<span class="sd">        The indices of the unique values</span>
+<span class="sd">    inverse : array-like, optional</span>
+<span class="sd">        The indices to reconstruct the original data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">order</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_index</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">return_inverse</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">unique</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
-
-    <span class="c1"># collect return values</span>
-    <span class="c1"># start with the unique values in original order</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">unique</span><span class="p">[</span><span class="n">order</span><span class="p">]]</span>
-    <span class="c1"># the new index values</span>
     <span class="k">if</span> <span class="n">return_index</span><span class="p">:</span>
-        <span class="c1"># re-order the index in the original array</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">order</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">return_inverse</span><span class="p">:</span>
-        <span class="c1"># create the new inverse from the order of the order</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="n">inverse</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">result</span></div>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 </pre></div>
 
            </div>

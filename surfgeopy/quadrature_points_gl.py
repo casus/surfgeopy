@@ -1,6 +1,13 @@
+# gauss_legendre.py
+"""
+gauss_legendre.py
+-----------------
+Gauss-Legendre quadrature and cubature rules implementation.
+"""
+
 import numpy as np
-from .utils import *
 from numpy import linalg as LA
+from .utils import *
 
 __all__ = ['gauss_legendre_square', 'q_gauss_legendre']
 
@@ -20,14 +27,21 @@ def gauss_legendre_square(deg):
     quad_ps : ndarray
         n-by-2 array of single or double, natural coordinates of quadrature points.
     """
-    q_points, q_weights = q_gauss_legendre(int(deg), np.array([-1, 1]))
+    # Generate 1D Gauss-Legendre quadrature points and weights
+    q_points, q_weights = q_gauss_legendre(deg, np.array([-1, 1]))
+    
+    # Create a 2D grid of quadrature points
     q_points_meshgrid = np.meshgrid(q_points, q_points, indexing='xy')
     q2x_points, q2y_points = map(lambda x: x.reshape(-1), q_points_meshgrid)
 
+    # Compute the weights for the 2D quadrature points
     weights_ps = np.kron(q_weights, q_weights)
-    quad_ps = np.array([[q2x, q2y] for q2x, q2y in zip(q2x_points, q2y_points)])
+    
+    # Combine the x and y coordinates into a single array
+    quad_ps = np.column_stack((q2x_points, q2y_points))
 
     return weights_ps, quad_ps
+
 
 def q_gauss_legendre(n, Domain=np.array([-1, 1])):
     """

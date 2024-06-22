@@ -113,8 +113,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../surfgeopy.html">surfgeopy package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points">surfgeopy.quadrature_points module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.quadrature_points_gl">surfgeopy.quadrature_points_gl module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#gauss-legendre-py">gauss_legendre.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.remesh">surfgeopy.remesh module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../surfgeopy.html#remesh-py">remesh.py</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.surf_integration">surfgeopy.surf_integration module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.utils">surfgeopy.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../surfgeopy.html#module-surfgeopy.version">surfgeopy.version module</a></li>
@@ -163,107 +169,102 @@
     <span class="n">SimpleImplicitSurfaceProjection</span><span class="p">,</span> <span class="n">compute_norm</span><span class="p">,</span> <span class="n">read_mesh_data</span><span class="p">,</span>
     <span class="n">pushforward</span><span class="p">,</span> <span class="n">pullback</span><span class="p">,</span> <span class="n">_cross</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;integration&#39;</span><span class="p">,</span> <span class="s1">&#39;compute_surf_quadrature&#39;</span><span class="p">,</span> <span class="s1">&#39;quadrature_surf_tri&#39;</span><span class="p">,</span> <span class="s1">&#39;quadrature_split_surf_tri&#39;</span><span class="p">]</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <div class="viewcode-block" id="integration"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.integration">[docs]</a><span class="k">def</span> <span class="nf">integration</span><span class="p">(</span>
-    <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span>
-    <span class="n">fun_handle</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">deg_integration</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ls_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ls_grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">mesh</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">interp_deg</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lp_dgr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">Refinement</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fun_handle</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">deg_integration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">quadrature_rule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute integration of a function over curved triangles.</span>
+<span class="sd">    Compute the integration of a function over curved triangles.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ls_function: callable</span>
-<span class="sd">            Zero-levelset function.</span>
-<span class="sd">        ls_grad_func: callable</span>
-<span class="sd">            Gradient of zero-levelset function.</span>
-<span class="sd">        mesh (str):</span>
-<span class="sd">            The file path to the MAT file containing mesh data.</span>
-<span class="sd">        interp_deg: int</span>
-<span class="sd">            Interpolation degree.</span>
-<span class="sd">        lp_dgr: int</span>
-<span class="sd">            :math:`l_p`-norm, which is used to define the polynomial degree.</span>
-<span class="sd">        Refinement: int</span>
-<span class="sd">            Refinement level.</span>
-<span class="sd">        fun_handle: callable, optional</span>
-<span class="sd">            Function to be evaluated on each quadrature point (default: lambda _: 1.0).</span>
-<span class="sd">        deg_integration: int, optional</span>
-<span class="sd">            Degree of integration (default: -1, use default configuration).</span>
-<span class="sd">        quadrature_rule: str, optional</span>
-<span class="sd">            Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
+<span class="sd">        ls_function (Callable[[np.ndarray], float]): Zero-levelset function.</span>
+<span class="sd">        ls_grad_func (Callable[[np.ndarray], np.ndarray]): Gradient of the zero-levelset function.</span>
+<span class="sd">        mesh (str): The file path to the MAT file containing mesh data.</span>
+<span class="sd">        interp_deg (int): Interpolation degree.</span>
+<span class="sd">        lp_dgr (int): The l_p-norm used to define the polynomial degree.</span>
+<span class="sd">        Refinement (int): Refinement level.</span>
+<span class="sd">        fun_handle (Callable[[np.ndarray], float], optional): Function to be evaluated on each quadrature point. Defaults to a constant function.</span>
+<span class="sd">        deg_integration (int, optional): Degree of integration. Defaults to -1 (use default configuration).</span>
+<span class="sd">        quadrature_rule (Optional[str], optional): Quadrature rule type. Can be &#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Integration values for each curved triangle.</span>
+<span class="sd">        np.ndarray: Integration values for each curved triangle.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">read_mesh_data</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="c1"># Case 1: User specifies deg_integration, and quadrature_rule </span>
-    <span class="k">if</span> <span class="n">deg_integration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">quadrature_rule</span><span class="o">==</span><span class="s1">&#39;Gauss_Legendre&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">deg_integration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">quadrature_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">quadrature_rule</span> <span class="o">=</span> <span class="s1">&#39;Pull_back_Gauss&#39;</span>
         <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
             <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span>
             <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span>
         <span class="p">)</span>
-    <span class="c1"># Case 2: User specifies deg_integration and quadrature_rule is default</span>
-    <span class="k">elif</span> <span class="n">deg_integration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">quadrature_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
             <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span>
-            <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="o">=</span><span class="s1">&#39;Pull_back_Gauss&#39;</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Default case: Use default configuration if no conditions are met</span>
-        <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">compute_surf_quadrature</span><span class="p">(</span>
-            <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span>
+            <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span>
         <span class="p">)</span>
 
-    <span class="c1"># Perform a function evaluation on each curved triangle</span>
     <span class="n">n_faces</span> <span class="o">=</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">fs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_faces</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_faces</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">fun_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_faces</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">offset</span><span class="p">[</span><span class="n">fun_id</span><span class="p">],</span> <span class="n">offset</span><span class="p">[</span><span class="n">fun_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
-            <span class="n">fs</span><span class="p">[</span><span class="n">fun_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">fun_handle</span><span class="p">(</span><span class="n">pnts</span><span class="p">[</span><span class="n">pid</span><span class="p">])</span> <span class="o">*</span> <span class="n">ws</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span>
+        <span class="n">fs</span><span class="p">[</span><span class="n">fun_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fun_handle</span><span class="p">(</span><span class="n">pnts</span><span class="p">[</span><span class="n">pid</span><span class="p">])</span> <span class="o">*</span> <span class="n">ws</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">offset</span><span class="p">[</span><span class="n">fun_id</span><span class="p">],</span> <span class="n">offset</span><span class="p">[</span><span class="n">fun_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
 
     <span class="k">return</span> <span class="n">fs</span></div>
 
-
-
-<div class="viewcode-block" id="compute_surf_quadrature"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.compute_surf_quadrature">[docs]</a><span class="k">def</span> <span class="nf">compute_surf_quadrature</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span>
-                              <span class="n">deg_integration</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span><span class="n">quadrature_rule</span><span class="o">=</span><span class="s1">&#39;Pull_back_Gauss&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_surf_quadrature"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.compute_surf_quadrature">[docs]</a><span class="k">def</span> <span class="nf">compute_surf_quadrature</span><span class="p">(</span>
+    <span class="n">ls_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ls_grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">vertices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">faces</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">interp_deg</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lp_dgr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">Refinement</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fun_handle</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">deg_integration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="n">quadrature_rule</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Pull_back_Gauss&#39;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute quadrature points and weights on curved triangles.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ls_function: callable</span>
-<span class="sd">            Zero-levelset function.</span>
-<span class="sd">        ls_grad_func: callable</span>
-<span class="sd">            Gradient of zero-levelset function.</span>
-<span class="sd">        vertices: ndarray</span>
-<span class="sd">            Array of vertex coordinates.</span>
-<span class="sd">        faces: ndarray</span>
-<span class="sd">            Array of face connectivity.</span>
-<span class="sd">        interp_deg: int</span>
-<span class="sd">            Interpolation degree.</span>
-<span class="sd">        lp_dgr: int</span>
-<span class="sd">            :math:`l_p`-norm, which is used to define the polynomial degree.</span>
-<span class="sd">        deg_integration: int, optional</span>
-<span class="sd">            Degree of integration (default: 14).</span>
-<span class="sd">        quadrature_rule: str, optional</span>
-<span class="sd">            Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
+<span class="sd">        ls_function: Callable[[np.ndarray], float]: Zero-levelset function.</span>
+<span class="sd">        ls_grad_func: Callable[[np.ndarray], np.ndarray]: Gradient of zero-levelset function.</span>
+<span class="sd">        vertices: np.ndarray: Array of vertex coordinates.</span>
+<span class="sd">        faces: np.ndarray: Array of face connectivity.</span>
+<span class="sd">        interp_deg: int: Interpolation degree.</span>
+<span class="sd">        lp_dgr: int: :math:`l_p`-norm, which is used to define the polynomial degree.</span>
+<span class="sd">        Refinement: int: Refinement level.</span>
+<span class="sd">        fun_handle: Callable[[np.ndarray], float]: Function to be evaluated on each quadrature point.</span>
+<span class="sd">        deg_integration: int: Degree of integration (default: 14).</span>
+<span class="sd">        quadrature_rule: str: Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        ndarray, ndarray, ndarray</span>
-<span class="sd">        Quadrature points, weights, and offset array.</span>
+<span class="sd">        Tuple[np.ndarray, np.ndarray, np.ndarray]: Quadrature points, weights, and offset array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># Initialization</span>
     <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">n_faces</span> <span class="o">=</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nv_surf</span> <span class="o">=</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">max_nv</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">n_faces</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="n">pnts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_nv</span><span class="p">)])</span>
-    <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_nv</span><span class="p">)])</span>
-    <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span> <span class="k">for</span> <span class="n">fun_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_faces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
-
+    <span class="n">pnts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_nv</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_nv</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_faces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="c1"># Go through all the faces</span>
     <span class="k">for</span> <span class="n">fun_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_faces</span><span class="p">):</span>
         <span class="n">offset</span><span class="p">[</span><span class="n">fun_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
@@ -273,190 +274,169 @@
             <span class="n">n_elem</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">n_elem</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">continue</span>
-
         <span class="c1"># Split each element into several curved triangles</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_elem</span><span class="p">):</span>
             <span class="n">lvids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
             <span class="n">pnts_tri</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="n">lvids</span><span class="p">]]</span>
-
-            <span class="c1"># Generate quadrature points</span>
+        <span class="c1"># Generate quadrature points</span>
             <span class="k">if</span> <span class="n">Refinement</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                
-                <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_split_surf_tri</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">pnts_tri</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span> <span class="n">interp_deg</span><span class="p">,</span>
-                              <span class="n">lp_dgr</span><span class="p">,</span><span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_split_surf_tri</span><span class="p">(</span>
+                    <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">pnts_tri</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
+                    <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span>
+                    <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_surf_tri</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span>
-                                            <span class="n">pnts_tri</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span> <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span><span class="n">deg_integration</span><span class="p">,</span><span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_surf_tri</span><span class="p">(</span>
+                    <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">pnts_tri</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
+                    <span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span>
+                    <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span>
+                <span class="p">)</span>
 
     <span class="n">pnts</span> <span class="o">=</span> <span class="n">pnts</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">ws</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span>
     <span class="n">offset</span><span class="p">[</span><span class="n">n_faces</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
     <span class="k">return</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">offset</span></div>
-<div class="viewcode-block" id="quadrature_surf_tri"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.quadrature_surf_tri">[docs]</a><span class="k">def</span> <span class="nf">quadrature_surf_tri</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span>
-                        <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+<div class="viewcode-block" id="quadrature_surf_tri"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.quadrature_surf_tri">[docs]</a><span class="k">def</span> <span class="nf">quadrature_surf_tri</span><span class="p">(</span>
+    <span class="n">ls_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ls_grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">vertices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">faces</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">interp_deg</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lp_dgr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fun_handle</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">deg_integration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">quadrature_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pnts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ws</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For a mixed mesh, find the cell integration of the test function f.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ls_function: callable</span>
-<span class="sd">            Zero-levelset function.</span>
-<span class="sd">        ls_grad_func: callable</span>
-<span class="sd">            Gradient of zero-levelset function.</span>
-<span class="sd">        vertices: ndarray</span>
-<span class="sd">            Array of vertex coordinates.</span>
-<span class="sd">        faces: ndarray</span>
-<span class="sd">            Array of face connectivity.</span>
-<span class="sd">        interp_deg: int</span>
-<span class="sd">            Interpolation degree.</span>
-<span class="sd">        lp_dgr: int</span>
-<span class="sd">            :math:`l_p`-norm, which is used to define the polynomial degree.</span>
-<span class="sd">        deg_integration: int</span>
-<span class="sd">            Degree of integration.</span>
-<span class="sd">        quadrature_rule: str, optional</span>
-<span class="sd">            Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
-<span class="sd">        pnts: ndarray</span>
-<span class="sd">            Quadrature points array.</span>
-<span class="sd">        ws: ndarray</span>
-<span class="sd">            Quadrature weights array.</span>
-<span class="sd">        index: int</span>
-<span class="sd">            Current index in the arrays.</span>
+<span class="sd">        ls_function: Callable[[np.ndarray], float]: Zero-levelset function.</span>
+<span class="sd">        ls_grad_func: Callable[[np.ndarray], np.ndarray]: Gradient of zero-levelset function.</span>
+<span class="sd">        vertices: np.ndarray: Array of vertex coordinates.</span>
+<span class="sd">        faces: np.ndarray: Array of face connectivity.</span>
+<span class="sd">        interp_deg: int: Interpolation degree.</span>
+<span class="sd">        lp_dgr: int: :math:`l_p`-norm, which is used to define the polynomial degree.</span>
+<span class="sd">        fun_handle: Callable[[np.ndarray], float]: Function to be evaluated on each quadrature point.</span>
+<span class="sd">        deg_integration: int: Degree of integration.</span>
+<span class="sd">        quadrature_rule: str: Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
+<span class="sd">        pnts: np.ndarray: Quadrature points array.</span>
+<span class="sd">        ws: np.ndarray: Quadrature weights array.</span>
+<span class="sd">        index: int: Current index in the arrays.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        int</span>
-<span class="sd">            Updated index value.</span>
+<span class="sd">        int: Updated index value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">n_faces</span> <span class="o">=</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">interp_deg</span>
-    <span class="n">lp</span> <span class="o">=</span> <span class="n">lp_dgr</span>
-    <span class="n">pnts_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">pnts_qq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">mi</span> <span class="o">=</span> <span class="n">MultiIndexSet</span><span class="o">.</span><span class="n">from_degree</span><span class="p">(</span>
-        <span class="n">spatial_dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">poly_degree</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">lp_degree</span><span class="o">=</span><span class="n">lp</span><span class="p">)</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="n">MultiIndexSet</span><span class="o">.</span><span class="n">from_degree</span><span class="p">(</span><span class="n">spatial_dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">poly_degree</span><span class="o">=</span><span class="n">interp_deg</span><span class="p">,</span> <span class="n">lp_degree</span><span class="o">=</span><span class="n">lp_dgr</span><span class="p">)</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">mi</span><span class="p">)</span>
-
     <span class="c1"># Transform Chebyshev points from [-1,1]^2 to the reference simplex.</span>
     <span class="n">generating_points</span> <span class="o">=</span> <span class="n">pushforward</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">unisolvent_nodes</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">quad_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">generating_points</span><span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">generating_points</span><span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
-                         <span class="n">generating_points</span><span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">generating_points</span><span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">row1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">generating_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-    
+    <span class="n">quad_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">gp</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gp</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">generating_points</span><span class="p">])</span>
+
     <span class="k">if</span> <span class="n">quadrature_rule</span> <span class="o">==</span> <span class="s1">&#39;Pull_back_Gauss&#39;</span><span class="p">:</span>
         <span class="n">ws0</span><span class="p">,</span> <span class="n">cs0</span> <span class="o">=</span> <span class="n">quadrule_on_simplex</span><span class="p">(</span><span class="n">deg_integration</span><span class="p">)</span>
         <span class="n">nqp</span> <span class="o">=</span> <span class="n">ws0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># Transform quadrature points from the reference simplex to a unit square</span>
+    <span class="c1"># Transform quadrature points from the reference simplex to a unit square</span>
         <span class="n">ksi</span> <span class="o">=</span> <span class="n">pullback</span><span class="p">(</span><span class="n">cs0</span><span class="p">,</span> <span class="n">duffy_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ws0</span><span class="p">,</span> <span class="n">cs0</span> <span class="o">=</span> <span class="n">gauss_legendre_square</span><span class="p">(</span><span class="n">deg_integration</span><span class="p">)</span>
         <span class="n">nqp</span> <span class="o">=</span> <span class="n">ws0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    
-    <span class="c1"># enlarge the size of quadrature points buffer if inadequate</span>
+     <span class="c1"># enlarge the size of quadrature points buffer if inadequate</span>
     <span class="k">if</span> <span class="n">index</span> <span class="o">+</span> <span class="n">n_faces</span> <span class="o">*</span> <span class="n">nqp</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
         <span class="n">n_new</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_faces</span> <span class="o">*</span> <span class="n">nqp</span>
         <span class="n">ws</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">n_new</span><span class="p">,</span> <span class="n">refcheck</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">pnts</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">n_new</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">refcheck</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+   
     <span class="k">for</span> <span class="n">fun_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_faces</span><span class="p">):</span>
-        <span class="n">pnts_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">unisolvent_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-        <span class="n">pnts_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">unisolvent_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">quad_ps</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">pnts_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">grid</span><span class="o">.</span><span class="n">unisolvent_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">qp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">quad_ps</span><span class="p">):</span>
             <span class="n">pnts_qq</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">quad_ps</span><span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
-                <span class="o">+</span> <span class="n">quad_ps</span><span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
-                <span class="o">+</span> <span class="n">quad_ps</span><span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+                <span class="n">qp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">+</span>
+                <span class="n">qp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">+</span>
+                <span class="n">qp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="n">fun_id</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+            <span class="p">)</span>
+            <span class="n">pnts_p</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">SimpleImplicitSurfaceProjection</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">pnts_qq</span><span class="p">)</span>
 
-            <span class="n">pnts_p</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">SimpleImplicitSurfaceProjection</span><span class="p">(</span>
-                <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">pnts_qq</span><span class="p">)</span>
-            <span class="n">pnts_func</span><span class="p">[</span><span class="n">q</span><span class="p">]</span><span class="o">=</span><span class="n">fun_handle</span><span class="p">(</span><span class="n">pnts_p</span><span class="p">[</span><span class="n">q</span><span class="p">])</span>
-
-        <span class="n">interpol_coeffs</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dds</span><span class="p">(</span><span class="n">pnts_p</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">tree</span><span class="p">))</span>
-        <span class="n">newt_poly</span>  <span class="o">=</span> <span class="n">NewtonPolynomial</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="n">interpol_coeffs</span><span class="p">)</span>
-
-  
+        <span class="n">interpol_coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dds</span><span class="p">(</span><span class="n">pnts_p</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">tree</span><span class="p">))</span>
+        <span class="n">newt_poly</span> <span class="o">=</span> <span class="n">NewtonPolynomial</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="n">interpol_coeffs</span><span class="p">)</span>
         <span class="c1"># compute partial derivatives with respect to &quot;s&quot;</span>
-        <span class="n">ds_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
+        <span class="n">ds_poly</span> <span class="o">=</span> <span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
+         <span class="c1"># compute partial derivatives with respect to &quot;t&quot;</span>
+        <span class="n">dt_poly</span> <span class="o">=</span> <span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
 
-        <span class="c1"># compute partial derivatives with respect to &quot;t&quot;</span>
-        <span class="n">dt_poly</span> <span class="o">=</span><span class="n">newt_poly</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;numba-par&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">quadrature_rule</span> <span class="o">==</span> <span class="s1">&#39;Pull_back_Gauss&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">qq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nqp</span><span class="p">):</span>
-                <span class="c1"># there are two alternatives to project quadrature points on the  manifold</span>
-                <span class="c1"># 1. via closest point projection</span>
-                <span class="c1"># pnts[index] = SimpleImplicitSurfaceProjection(ls_function, ls_grad_func,pnts_q)</span>
-                <span class="c1"># 2.  by evaluating the polynomial, which is less exepnsive</span>
                 <span class="n">pnts</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">newt_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
                 <span class="c1"># evaluate ∂_s at the quadrature points</span>
                 <span class="n">p_s</span> <span class="o">=</span> <span class="n">ds_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
                 <span class="c1"># evaluate ∂_t at the quadrature points</span>
                 <span class="n">p_t</span> <span class="o">=</span> <span class="n">dt_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ksi</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
                 <span class="c1"># Compute ||∂_s x ∂_t||</span>
                 <span class="n">J</span> <span class="o">=</span> <span class="n">compute_norm</span><span class="p">(</span><span class="n">_cross</span><span class="p">(</span><span class="n">p_s</span><span class="p">,</span> <span class="n">p_t</span><span class="p">))</span>
                 <span class="c1"># Please use this in the case you are applying Duffy&#39; transform</span>
                 <span class="c1">#ws[index] = ws0[qq] * J * (4/(1-cs0[qq, 1]))</span>
-                <span class="n">ws</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws0</span><span class="p">[</span><span class="n">qq</span><span class="p">]</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> \
-                   <span class="p">(</span><span class="mi">8</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-                 <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">ws</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws0</span><span class="p">[</span><span class="n">qq</span><span class="p">]</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> <span class="p">(</span><span class="mi">8</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">qq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nqp</span><span class="p">):</span>
-
                 <span class="n">pnts</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">newt_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
-                <span class="c1"># evaluate ∂_t at the quadrature points</span>
-                <span class="n">p_s</span> <span class="o">=</span> <span class="n">ds_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
                 <span class="c1"># evaluate ∂_s at the quadrature points</span>
+                <span class="n">p_s</span> <span class="o">=</span> <span class="n">ds_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
+                <span class="c1"># evaluate ∂_t at the quadrature points</span>
                 <span class="n">p_t</span> <span class="o">=</span> <span class="n">dt_poly</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cs0</span><span class="p">[</span><span class="n">qq</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
                 <span class="c1"># Compute ||∂_s x ∂_t||</span>
                 <span class="n">J</span> <span class="o">=</span> <span class="n">compute_norm</span><span class="p">(</span><span class="n">_cross</span><span class="p">(</span><span class="n">p_s</span><span class="p">,</span> <span class="n">p_t</span><span class="p">))</span>
                 <span class="n">ws</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws0</span><span class="p">[</span><span class="n">qq</span><span class="p">]</span> <span class="o">*</span> <span class="n">J</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
-            
-    
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
     <span class="k">return</span> <span class="n">index</span></div>
 
-
-<div class="viewcode-block" id="quadrature_split_surf_tri"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.quadrature_split_surf_tri">[docs]</a><span class="k">def</span> <span class="nf">quadrature_split_surf_tri</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span>
-                              <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">Refinement</span><span class="p">,</span><span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="quadrature_split_surf_tri"><a class="viewcode-back" href="../../surfgeopy.html#surfgeopy.surf_integration.quadrature_split_surf_tri">[docs]</a><span class="k">def</span> <span class="nf">quadrature_split_surf_tri</span><span class="p">(</span>
+    <span class="n">ls_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ls_grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">vertices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">faces</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">interp_deg</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lp_dgr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">Refinement</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fun_handle</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">deg_integration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">quadrature_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pnts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ws</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For a mixed mesh, find the cell integration of the test function f.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ls_function: callable</span>
-<span class="sd">            Zero-levelset function.</span>
-<span class="sd">        ls_grad_func: callable</span>
-<span class="sd">            Gradient of the zero-levelset function.</span>
-<span class="sd">        vertices: ndarray</span>
-<span class="sd">            Array of vertex coordinates.</span>
-<span class="sd">        faces: ndarray</span>
-<span class="sd">            Array of face connectivity.</span>
-<span class="sd">        interp_deg: int</span>
-<span class="sd">            Interpolation degree.</span>
-<span class="sd">        lp_dgr: int</span>
-<span class="sd">            :math:`l_p`-norm, which is used to define the polynomial degree.</span>
-<span class="sd">        deg_integration: int</span>
-<span class="sd">            Degree of integration.</span>
-<span class="sd">        quadrature_rule: str, optional</span>
-<span class="sd">            Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
-<span class="sd">        pnts: ndarray</span>
-<span class="sd">            Quadrature points array.</span>
-<span class="sd">        ws: ndarray</span>
-<span class="sd">            Quadrature weights array.</span>
-<span class="sd">        index: int</span>
-<span class="sd">            Current index in the arrays.</span>
+<span class="sd">        ls_function: Callable[[np.ndarray], float]: Zero-levelset function.</span>
+<span class="sd">        ls_grad_func: Callable[[np.ndarray], np.ndarray]: Gradient of the zero-levelset function.</span>
+<span class="sd">        vertices: np.ndarray: Array of vertex coordinates.</span>
+<span class="sd">        faces: np.ndarray: Array of face connectivity.</span>
+<span class="sd">        interp_deg: int: Interpolation degree.</span>
+<span class="sd">        lp_dgr: int: :math:`l_p`-norm, which is used to define the polynomial degree.</span>
+<span class="sd">        deg_integration: int: Degree of integration.</span>
+<span class="sd">        quadrature_rule: str: Quadrature rule type (&#39;Gauss_Legendre&#39; or &#39;Gauss_Simplex&#39;).</span>
+<span class="sd">        pnts: np.ndarray: Quadrature points array.</span>
+<span class="sd">        ws: np.ndarray: Quadrature weights array.</span>
+<span class="sd">        index: int: Current index in the arrays.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        int</span>
-<span class="sd">            Updated index value.</span>
+<span class="sd">        int: Updated index value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Refinement</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Refinement</span><span class="p">):</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-    <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_surf_tri</span><span class="p">(</span><span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span>
-                                  <span class="n">lp_dgr</span><span class="p">,</span><span class="n">fun_handle</span><span class="p">,</span><span class="n">deg_integration</span><span class="p">,</span><span class="n">quadrature_rule</span><span class="p">,</span><span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">quadrature_surf_tri</span><span class="p">(</span>
+        <span class="n">ls_function</span><span class="p">,</span> <span class="n">ls_grad_func</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">interp_deg</span><span class="p">,</span>
+        <span class="n">lp_dgr</span><span class="p">,</span> <span class="n">fun_handle</span><span class="p">,</span> <span class="n">deg_integration</span><span class="p">,</span> <span class="n">quadrature_rule</span><span class="p">,</span> <span class="n">pnts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">index</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">index</span></div>
 </pre></div>
