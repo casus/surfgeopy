@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/github/license/zavala92/surfgeopy?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-380/)
 
-![](./images/surfgeopy_logo.png)
+<img src="images/surfgeopy_logo.png" alt="drawing" width="200"/>
 `surfgeopy` is a Python package that is freely available and open-source. Its purpose is to calculate approximations of surface integrals over smooth embedded manifolds.
 
 ## 🎉Table of Contents
