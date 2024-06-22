@@ -4,7 +4,6 @@ gauss_legendre.py
 -----------------
 Gauss-Legendre quadrature and cubature rules implementation.
 """
-
 import numpy as np
 from numpy import linalg as LA
 from .utils import *
@@ -27,6 +26,7 @@ def gauss_legendre_square(deg):
     quad_ps : ndarray
         n-by-2 array of single or double, natural coordinates of quadrature points.
     """
+    
     # Generate 1D Gauss-Legendre quadrature points and weights
     q_points, q_weights = q_gauss_legendre(deg, np.array([-1, 1]))
     
@@ -60,7 +60,7 @@ def q_gauss_legendre(n, Domain=np.array([-1, 1])):
         The default domain is the bi-unit interval [-1, 1].
 
     Returns
-    -------
+    --------
     x : ndarray
         1-D ndarray containing the sample points.
 
@@ -68,7 +68,7 @@ def q_gauss_legendre(n, Domain=np.array([-1, 1])):
         1-D ndarray containing the weights.
 
     Notes
-    -----
+    ------
     The function constructs the symmetric tridiagonal matrix and computes
     the eigenvalues and eigenvectors to obtain the quadrature points and weights.
 
