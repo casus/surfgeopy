@@ -182,11 +182,6 @@ below.
 }
 ```
 
-## Contributing
-
-👉 [Open an issue](https://codebase.helmholtz.cloud/interpol/surfgeopy/-/issues) or submit PRs.
-
-
 ## License
 
 [MIT](LICENSE)
