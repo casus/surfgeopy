@@ -54,7 +54,7 @@ Substituting the surface geometry $\varphi_i$ with Chebyshev–Lobatto interpola
 <img src="images/ss_map.png" alt="drawing" width="4000"/>
 
  <h2 align="center">
-💝 Results ! 💝
+ Results !
 </h2>                      
 
 <div style="white-space: nowrap;">
